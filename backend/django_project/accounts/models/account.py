@@ -1,5 +1,8 @@
+"""
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
+All rights reserved under BSD 3-Clause License.
+"""
 import logging
-
 logger = logging.getLogger(__name__)
 from django.db import models
 from django.utils.translation import gettext_lazy as _

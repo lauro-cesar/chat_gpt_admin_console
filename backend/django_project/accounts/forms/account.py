@@ -1,3 +1,8 @@
+"""
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
+All rights reserved under BSD 3-Clause License.
+"""
+
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UsernameField
@@ -29,30 +34,6 @@ class UserCreateForm(UserCreationForm):
             user.save()
         return user
 
-    class Meta:
-        model = get_user_model()
-        fields = (
-            "username",
-            "first_name",
-            "last_name",
-            "email",
-        )
-        field_classes = {"username": UsernameField}
-
-
-class DeveloperCreateForm(UserCreateForm):
-    class Meta:
-        model = get_user_model()
-        fields = (
-            "username",
-            "first_name",
-            "last_name",
-            "email",
-        )
-        field_classes = {"username": UsernameField}
-
-
-class GamerCreateForm(UserCreateForm):
     class Meta:
         model = get_user_model()
         fields = (

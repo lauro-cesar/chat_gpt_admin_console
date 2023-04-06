@@ -1,3 +1,7 @@
+"""
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
+All rights reserved under BSD 3-Clause License.
+"""
 from django.db.models.signals import (
     pre_save,
     post_save,
@@ -13,16 +17,6 @@ from django.dispatch import receiver
 from django.conf import settings
 from project.celery_tasks import app
 from accounts.models import Account
-
-
-@receiver(pre_save, sender=Account)
-def PreSaveAccountSignals(
-        sender, instance, raw, using, update_fields, *args, **kwargs
-):
-    if hasattr(instance, "account_type"):
-        print("oi")
-        # print(instance.account_type.privilege_level)
-    # set user previlegies based on account type
 
 
 @receiver(post_save, sender=Account)
