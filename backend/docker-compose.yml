@@ -91,7 +91,7 @@ services:
     volumes:
       - "./django_project/:/home/django_project/"
     ports:
-      - 7071:80
+      - 7072:80
 
     depends_on:
       - django_project

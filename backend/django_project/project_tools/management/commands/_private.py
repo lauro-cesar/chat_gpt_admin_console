@@ -1,16 +1,16 @@
 """
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 """
 
 COPYRIGHT_HEADER="""
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 """
 
 APP_URLS_TEMPLATE = """
 \"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 from django.urls import path,include, re_path
@@ -28,7 +28,7 @@ APP_URLS_INIT_TEMPLATE = """ """
 
 ASYNC_URLS_TEMPLATE = """
 \"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 from django.urls import path
@@ -53,7 +53,7 @@ REST_URLS_INIT_TEMPLATE = """ """
 
 REST_URLS_TEMPLATE = """
 \"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 
@@ -76,7 +76,7 @@ urlpatterns = [
 
 WEB_URLS_TEMPLATE = """
 \"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 
@@ -97,7 +97,7 @@ WEB_URLS_INIT_TEMPLATE = """ """
 
 CHANNELS_TEMPLATE = """
 \"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 import logging
@@ -257,7 +257,7 @@ SERIALIZER_INIT_TEMPLATE = """\nfrom .{{save_to}} import {{model_name}}Serialize
 
 SERIALIZER_TEMPLATE = """
 \"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 from rest_framework import serializers
@@ -304,7 +304,7 @@ from .{{save_to}} import (
 
 VIEW_TEMPLATE = """
 \"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 from rest_framework import viewsets
@@ -387,7 +387,7 @@ TASK_INIT_TEMPLATE = """\nfrom . import {{save_to}}\n"""
 
 TASK_TEMPLATE = """
 \"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 
@@ -465,7 +465,7 @@ SIGNAL_INIT_TEMPLATE = (
 
 SIGNAL_TEMPLATE = """
 \"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 
@@ -501,7 +501,7 @@ def PostSave{{model_name}}Signals(
 MODEL_INIT_TEMPLATE = """\nfrom .{{save_to}} import {{model_name}}\n"""
 
 MODEL_TEMPLATE = """\"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 
@@ -805,7 +805,7 @@ ADMIN_INIT_TEMPLATE = """\nfrom .{{save_to}} import {{model_name}}Admin\n"""
 
 ADMIN_TEMPLATE = """
 \"\"\"
-Copyright (c) 2020, Lauro Cesar <lauro@hostcert.com.br>
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 \"\"\"
 from django.contrib import admin

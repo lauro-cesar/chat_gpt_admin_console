@@ -1,3 +1,7 @@
+"""
+Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
+All rights reserved under BSD 3-Clause License.
+"""
 from django.contrib import admin
 from django.core.cache import cache
 from django.utils.safestring import mark_safe
