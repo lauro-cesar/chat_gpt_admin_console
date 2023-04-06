@@ -1,0 +1,32 @@
+[
+{
+    "model": "accounts.account",
+    "pk": 1,
+    "fields": {
+        "isActive": true,
+        "isPublic": false,
+        "isRemoved": false,
+        "password": "pbkdf2_sha256$600000$Z8GUA9aqqRXVTevLJWaJkv$ZwqIWK8AMlZzwjCN8t3A3ObskxhNPUybO/CkoZpg2jA=",
+        "last_login": "2023-04-06T09:20:07.461",
+        "is_superuser": true,
+        "username": "root",
+        "first_name": "root",
+        "last_name": "Last Name",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-04-06T08:33:53",
+        "dateCreated": "2023-04-06T08:35:00.096",
+        "lastModified": "2023-04-06T08:35:00.096",
+        "testUser": false,
+        "guestUser": false,
+        "validEmail": false,
+        "email": "root@sharedway.app",
+        "privilege_level": 1,
+        "is_test_account": false,
+        "groups": [
+            1
+        ],
+        "user_permissions": []
+    }
+}
+]

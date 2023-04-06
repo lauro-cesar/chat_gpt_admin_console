@@ -1,0 +1,27 @@
+from django.core.management.base import BaseCommand, CommandError
+from django.conf import settings
+import os 
+import sys
+import re
+from jinja2 import Template
+from jinja2 import Markup
+from _templates import TEMPLATE
+
+
+# class Command(BaseCommand):
+#     help = 'Create fields templates '
+     
+
+#     def handle(self, *args, **options):       
+#         self.base_dir = f"{settings.BASE_DIR}/entidades/templates/entidade/fields"
+#         campos = list( map( lambda f:f.name, Model._meta.fields))
+#         for campo in campos:
+#             if not os.path.exists(f"{self.base_dir}/{campo}.html"):
+#                 with open(f"{self.base_dir}/{campo}.html","w") as save_to_file:
+#                     save_to_file.write(Template(TEMPLATE).render({"campo":campo}))
+#                     save_to_file.close()
+
+        
+#         self.stdout.write(self.style.SUCCESS('Successfully'))
+  
+

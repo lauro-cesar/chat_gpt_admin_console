@@ -1,0 +1,107 @@
+version: "3.3"
+
+services:
+
+  backend_db:
+    restart: always
+    image: postgres:alpine
+    env_file:
+      - .env-db.yaml
+      - .env-common.yaml
+    expose:
+      - 5432
+
+  django_redis_channels:
+    restart: always
+    image: redis:alpine
+    env_file:
+      - .env-redis-channels.yaml
+      - .env-common.yaml
+    expose:
+      - 6379
+    depends_on:
+      - backend_db
+
+  django_redis_cache:
+    restart: always
+    image: redis:alpine
+    env_file:
+      - .env-redis-cache.yaml
+      - .env-common.yaml
+    expose:
+      - 6379
+    depends_on:
+      - backend_db
+
+  django_redis_queue:
+    restart: always
+    image: redis:alpine
+    env_file:
+      - .env-redis-queue.yaml
+      - .env-common.yaml
+    expose:
+      - 6379
+    depends_on:
+      - backend_db
+
+  django_project:
+    restart: always
+    tty: true
+    volumes:
+      - "./django_project/:/home/django_project/"
+
+    build:
+      context: ./django_docker
+      dockerfile: Dockerfile
+    command: bash -c /home/django_project/entrypoint.sh
+    expose:
+      - 8001
+      - 8002
+      - 8003
+
+    env_file:
+      - .env-db.yaml
+      - .env-api.yaml
+      - .env-redis-channels.yaml
+      - .env-redis-queue.yaml
+      - .env-redis-cache.yaml
+      - .env-common.yaml
+      - .env-nginx.yaml
+
+    depends_on:
+      - backend_db
+      - django_redis_channels
+      - django_redis_cache
+      - django_redis_queue
+
+  nginx_static_server:
+    restart: always
+    build:
+      context: ./nginx_server
+      dockerfile: Dockerfile
+
+    env_file:
+      - .env-nginx.yaml
+      - .env-common.yaml
+      - .env-api.yaml
+      - .env-redis-channels.yaml
+      - .env-redis-queue.yaml
+      - .env-redis-cache.yaml
+
+    volumes:
+      - "./django_project/:/home/django_project/"
+    ports:
+      - 7071:80
+
+    depends_on:
+      - django_project
+      - backend_db
+      - django_redis_channels
+      - django_redis_cache
+      - django_redis_queue
+
+volumes:
+  static_volume:
+  media_volume:
+  datastore_volume:
+

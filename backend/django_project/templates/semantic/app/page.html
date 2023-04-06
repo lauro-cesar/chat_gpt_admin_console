@@ -1,0 +1,15 @@
+{% extends "semantic/app/base.html" %}
+{% load i18n static %}
+
+
+{% block headTitle %}
+{{ flatpage.title }}
+{% endblock %}
+
+
+{% block bodyMainContent %}
+<div class="ui container">
+    {{ flatpage.content }}
+</div>
+
+{% endblock %}

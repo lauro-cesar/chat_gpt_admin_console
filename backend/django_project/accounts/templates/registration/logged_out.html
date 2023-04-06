@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+
+{% block breadcrumbs %}{% endblock %}
+
+
+
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/login.css" %}">
+{{ form.media }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+
+{% block content %}
+
+<div id="content-main">
+<p>{% translate "Thanks for spending some quality time with the web site today." %}</p>
+<p><a href="{% url 'admin:index' %}">{% translate 'Log in again' %}</a></p>
+
+</div>
+{% endblock %}
+
+
+

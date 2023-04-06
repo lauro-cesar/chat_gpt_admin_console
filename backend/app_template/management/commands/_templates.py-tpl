@@ -1,0 +1,6 @@
+"""
+"""
+TEMPLATE = """
+{% templatetag  openblock %}load i18n static custom_icons {% templatetag  closeblock %} 
+{% templatetag  openblock %} spaceless {% templatetag  closeblock %}
+<label for="{% templatetag  openvariable %}form.{% templatetag  openvariable %}campo{% templatetag  closevariable %}.id_for_label{% templatetag  closevariable %}">{% templatetag  openvariable %}form.{% templatetag  openvariable %}campo{% templatetag  closevariable %}.label}}</label>{% templatetag  openvariable %}form.{% templatetag  openvariable %}campo{% templatetag  closevariable %}|add_attr:"form-control"{% templatetag  closevariable %}{% templatetag  openblock %} endspaceless {% templatetag  closeblock %}"""
