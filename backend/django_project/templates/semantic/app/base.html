@@ -1,0 +1,162 @@
+{% load i18n l10n static project_tags %}
+<!DOCTYPE html>
+{% block preHtml %}{% endblock %}
+<html lang="pt-BR" class="h-100 w-100">
+<head>
+
+<title>
+{% block headTitle %}{% endblock %}
+</title>
+
+{% block headBaseMeta %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=0.95, maximum-scale=1.0">
+<meta name="description" content={% block metaDescription %}{% endblock %}>
+<meta name="author" content={% block metaAuthor %}{% endblock %}>
+    <link rel="icon" type="image/x-icon" href="{% static '/icons/favicon.png'%}">
+
+<meta name="theme-color" content="#ffffff">
+{% endblock %}
+
+
+{% block headExtraMeta %}{% endblock %}
+
+
+
+
+{% block headCoreCSSLinks %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block headExtraCSSLinks %}{% endblock %}
+
+
+
+{% block headInlineCSS %}
+
+<style type="text/css">
+ 
+ .vantagem {
+    font-size: 1.5em;
+ }
+
+
+ body {
+    background-color: #ffffff;
+    padding-top: 70px;
+ }
+
+
+    
+    
+     
+      </style>
+
+
+
+{% endblock %}
+
+
+{% block headJS %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+  {% endblock %}
+
+
+
+
+{% block headExtraJS %}{% endblock %}
+
+</head>
+{% block preHtmlBody %}{% endblock %}
+
+<body class="{% block bodyCSSClass %}d-flex flex-column h-100 {% endblock %}">
+
+
+{% block bodySectionTop %}
+<div class="ui top fixed menu inverted" style="background-color: #001f3b;">
+  <div class="item">
+    <img src="{% static '/icons/logo.png'%}">
+  </div>
+  
+  <div class="right menu">
+   
+
+
+  </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block bodyMainContent %}
+{% endblock %}
+
+
+{% block bodySectionBottom %}
+
+<div class="ui inverted  vertical footer segment" style="background-color: #001f3b;">
+    <div class="ui container">
+      <div class="ui stackable inverted divided equal height stackable grid">
+        <div class="three wide column">
+          <h4 class="ui inverted header">Console</h4>
+          <div class="ui inverted link list">           
+            <a href="/console/admin/" class="item">ChatGPT console</a>
+          </div>
+        </div>
+        <div class="three wide column">
+          <h4 class="ui inverted header">Help</h4>
+          <div class="ui inverted link list">
+            
+            <a href="/pages/help/" class="item">How to use</a>
+            <a href="/pages/contact/" class="item">Contact us</a>
+
+           
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block bodyEndJS %}
+
+<script>
+    $(document)
+      .ready(function() {  
+  $('.ui.embed').embed();
+})
+    ;
+
+    $('.image img')
+  .visibility({
+    type       : 'image',
+    transition : 'fade in',
+    duration   : 1000
+  })
+;
+  
+  
+    </script>
+    
+{% endblock %}
+
+</body>
+
+{% block postHtmlBody %}{% endblock %}
+</html>
+{% block postHtml %}{% endblock %}

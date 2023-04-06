@@ -1,0 +1,140 @@
+{% load i18n l10n static project_tags %}
+<!DOCTYPE html>
+{% block preHtml %}{% endblock %}
+<html lang="pt-BR" class="h-100 w-100">
+<head>
+
+<title>
+{% block headTitle %}
+Portal MEI
+{% endblock %}
+</title>
+
+{% block headBaseMeta %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=0.95, maximum-scale=1.0">
+<meta name="description" content={% block metaDescription %}{% endblock %}>
+<meta name="author" content={% block metaAuthor %}{% endblock %}>
+    <link rel="icon" type="image/x-icon" href="{% static '/icons/favicon.png'%} ">
+
+<meta name="theme-color" content="#ffffff">
+{% endblock %}
+
+
+{% block headExtraMeta %}{% endblock %}
+
+
+
+
+{% block headCoreCSSLinks %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+ <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+{% endblock %}
+
+
+{% block headExtraCSSLinks %}{% endblock %}
+
+
+
+{% block headInlineCSS %}
+  <style type="text/css"></style>
+  {% endblock %}
+
+
+{% block headJS %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.slim.min.js" integrity="sha512-jxwTCbLJmXPnV277CvAjAcWAjURzpephk0f0nO2lwsvcoDMqBdy1rh1jEwWWTabX1+Grdmj9GFAgtN22zrV0KQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <script>
+
+   function openAsyncEndPoint(endpoint,onError,onOpen,onReceiveMessage) {
+
+        webSocket = new WebSocket(endpoint);
+
+        webSocket.onerror = function(event) {
+            onError(event)
+        };
+
+        webSocket.onopen = function(event) {
+            onOpen(event)
+        };
+        webSocket.onmessage = function(event) {
+            onReceiveMessage(event)
+        };
+        return webSocket;
+    }
+    </script>
+
+
+  {% endblock %}
+
+
+
+
+{% block headExtraJS %}{% endblock %}
+
+</head>
+{% block preHtmlBody %}{% endblock %}
+
+<body class="{% block bodyCSSClass %}d-flex flex-column h-100 {% endblock %}">
+
+
+{% block bodySectionTop %}
+<div class="ui top fixed menu inverted" style="background-color: #001f3b;">
+  <div class="item">
+    <img src="/static/icons/hand.png">
+  </div>
+  
+  <div class="right menu">
+   
+
+
+  </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block bodyMainContent %}
+{% endblock %}
+
+
+{% block bodySectionBottom %}
+<div class="ui inverted  vertical footer segment" style="background-color: #001f3b;">
+    <div class="ui container">
+      <div class="ui stackable inverted divided equal height stackable grid">
+        <div class="three wide column">
+          <h4 class="ui inverted header">Sobre nós</h4>
+          <div class="ui inverted link list">           
+            <a href="/fale-conosco/" class="item">Fale Conosco</a>
+          </div>
+        </div>
+        <div class="three wide column">
+          <h4 class="ui inverted header">Institucional</h4>
+          <div class="ui inverted link list">
+            
+            <a href="/app/politica-de-privacidade/" class="item">Politica de privacidade</a>
+
+           
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block bodyEndJS %}
+{% endblock %}
+
+</body>
+
+{% block postHtmlBody %}{% endblock %}
+</html>
+{% block postHtml %}{% endblock %}

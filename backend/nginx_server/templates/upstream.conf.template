@@ -1,0 +1,9 @@
+
+
+upstream backend-http {
+    server ${DJANGO_HOST}:${HTTP_PORT};
+}
+
+upstream backend-ws {
+    server ${DJANGO_HOST}:${WS_PORT};
+}

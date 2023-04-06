@@ -1,0 +1,46 @@
+[run]
+branch = True
+omit =
+  */migrations/*
+  */tests/*
+  "*celery.py
+  *pagination.py
+  *__init__.py
+  *admin.py
+  *urls.py
+  *settings.py
+  *apps.py
+  *tests.py
+  *tests_*.py
+
+include =
+  usersettings/*
+  twillio4django/*
+  accounts/*
+  server/*
+  uood/*"
+
+[html]
+directory = tests/reports
+
+[report]
+fail_under = 95
+skip_empty = True
+sort= Miss
+show_missing = True
+exclude_lines =
+    # Re-enable the standard pragma
+    pragma: NO COVER
+    pragma: NO PY${PY_VERSION} COVER
+    def __repr__
+    if self\.debug
+
+    # Don't complain if tests don't hit defensive assertion code:
+    raise AssertionError
+    raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run:
+    if 0:
+    if __name__ == .__main__.:
+
+
