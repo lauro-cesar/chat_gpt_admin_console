@@ -11,7 +11,7 @@ from accounts.views import (
     AccountDeleteView,
     AccountCreateView,
 )
-from accounts.forms import UserCreateForm, DeveloperCreateForm, GamerCreateForm
+from accounts.forms import UserCreateForm
 
 
 urlpatterns = [
@@ -32,15 +32,5 @@ urlpatterns = [
         "collection/adicionar/",
         AccountCreateView.as_view(form_class=UserCreateForm),
         name="account-create",
-    ),
-    path(
-        "collection/adicionar/developer/",
-        AccountCreateView.as_view(form_class=DeveloperCreateForm),
-        name="developer-account-create",
-    ),
-    path(
-        "collection/adicionar/gamer/",
-        AccountCreateView.as_view(form_class=GamerCreateForm),
-        name="gamer-account-create",
-    ),
+    )
 ]

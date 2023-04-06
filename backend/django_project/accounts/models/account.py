@@ -59,6 +59,8 @@ class Account(AbstractUser, BaseModel):
     privilege_level = models.PositiveIntegerField(
         default=10000, verbose_name=_("Nivel de previlegios")
     )
+
+
     @property
     def is_operator(self):
         return (settings.SUPER_USER_MAX_LEVEL < self.privilege_level <= settings.OPERATOR_USER_MAX_LEVEL )
@@ -77,7 +79,7 @@ class Account(AbstractUser, BaseModel):
         if len(self.first_name.strip()) < 2:
             self.first_name = f"{self.username}"
 
-        if len(self.last_name.strip()) < 10:
+        if len(self.last_name.strip()) < 2:
             self.last_name = "Last Name"
 
         if len(self.email.strip()) < 10:

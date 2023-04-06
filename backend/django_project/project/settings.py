@@ -87,12 +87,13 @@ CELERY_RESULT_BACKEND = f"redis://{REDIS_QUEUE_HOST}:{REDIS_QUEUE_PORT}"
 CELERY_TASK_DEFAULT_QUEUE = REDIS_QUEUE_QUEUE_NAME
 
 CELERY_ENABLE_UTC = False
-CELERY_TIMEZONE = "America/Sao_Paulo"
+TIME_ZONE = 'America/Chicago'
+CELERY_TIMEZONE = 'America/Chicago'
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "json"
 TASK_OFFSET_LIMIT = 50
-TIME_ZONE = "America/Sao_Paulo"
+
 
 SENDGRID_API_KEY = os.environ.get(
     "SENDGRID_API_KEY",
@@ -278,10 +279,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "pt-BR"
-LANGUAGES = [("pt-br", "Portugues")]
-
-TIME_ZONE = "America/Sao_Paulo"
+LANGUAGE_CODE = "en-US"
+LANGUAGES = [("en-us", "English")]
 
 USE_I18N = True
 USE_THOUSAND_SEPARATOR = True
