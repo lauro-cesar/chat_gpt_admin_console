@@ -11,10 +11,11 @@ services:
     expose:
       - 5432
 
-  django_redis_channels:
+  project_redis_channels:
     restart: always
     image: redis:alpine
     env_file:
+      - .env-db.yaml
       - .env-redis-channels.yaml
       - .env-common.yaml
     expose:
@@ -22,10 +23,11 @@ services:
     depends_on:
       - backend_db
 
-  django_redis_cache:
+  project_redis_cache:
     restart: always
     image: redis:alpine
     env_file:
+      - .env-db.yaml
       - .env-redis-cache.yaml
       - .env-common.yaml
     expose:
@@ -33,7 +35,7 @@ services:
     depends_on:
       - backend_db
 
-  django_redis_queue:
+  project_redis_queue:
     restart: always
     image: redis:alpine
     env_file:
@@ -44,16 +46,16 @@ services:
     depends_on:
       - backend_db
 
-  django_project:
+  chat_gpt_api:
     restart: always
     tty: true
     volumes:
-      - "./django_project/:/home/django_project/"
+      - "./chat_gpt_api/:/home/chat_gpt_api/"
 
     build:
-      context: ./django_docker
+      context: ./project_docker
       dockerfile: Dockerfile
-    command: bash -c /home/django_project/entrypoint.sh
+    command: bash -c /home/chat_gpt_api/entrypoint.sh
     expose:
       - 8001
       - 8002
@@ -70,9 +72,9 @@ services:
 
     depends_on:
       - backend_db
-      - django_redis_channels
-      - django_redis_cache
-      - django_redis_queue
+      - project_redis_channels
+      - project_redis_cache
+      - project_redis_queue
 
   nginx_static_server:
     restart: always
@@ -89,16 +91,16 @@ services:
       - .env-redis-cache.yaml
 
     volumes:
-      - "./django_project/:/home/django_project/"
+      - "./chat_gpt_api/:/home/chat_gpt_api/"
     ports:
       - 7072:80
 
     depends_on:
-      - django_project
+      - chat_gpt_api
       - backend_db
-      - django_redis_channels
-      - django_redis_cache
-      - django_redis_queue
+      - project_redis_channels
+      - project_redis_cache
+      - project_redis_queue
 
 volumes:
   static_volume:

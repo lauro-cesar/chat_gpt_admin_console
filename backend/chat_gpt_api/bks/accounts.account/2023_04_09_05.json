@@ -1,0 +1,62 @@
+[
+{
+    "model": "accounts.account",
+    "pk": 1,
+    "fields": {
+        "isActive": true,
+        "isPublic": false,
+        "isRemoved": false,
+        "password": "pbkdf2_sha256$600000$Z8GUA9aqqRXVTevLJWaJkv$ZwqIWK8AMlZzwjCN8t3A3ObskxhNPUybO/CkoZpg2jA=",
+        "last_login": "2023-04-09T03:44:01.651",
+        "is_superuser": true,
+        "username": "root",
+        "first_name": "Console Manager",
+        "last_name": "User",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-04-06T08:33:53",
+        "dateCreated": "2023-04-06T10:57:45.897",
+        "lastModified": "2023-04-06T10:57:45.897",
+        "testUser": false,
+        "guestUser": false,
+        "validEmail": false,
+        "email": "root@sharedway.app",
+        "privilege_level": 1,
+        "is_test_account": false,
+        "groups": [
+            1
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.account",
+    "pk": 2,
+    "fields": {
+        "isActive": true,
+        "isPublic": false,
+        "isRemoved": false,
+        "password": "pbkdf2_sha256$600000$Hf19oIv12QPHHkZq9WZ6qo$IPUKqLilRNtIGUyRwmwM3ZqOXi+2sG1+jU0+xAt6qns=",
+        "last_login": "2023-04-09T03:34:21.098",
+        "is_superuser": false,
+        "username": "manager",
+        "first_name": "Operador",
+        "last_name": "Do console",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-04-09T03:33:49",
+        "dateCreated": "2023-04-09T03:34:16.106",
+        "lastModified": "2023-04-09T03:34:16.106",
+        "testUser": false,
+        "guestUser": false,
+        "validEmail": false,
+        "email": "manager_1681029229.194947@domain.com",
+        "privilege_level": 10000,
+        "is_test_account": false,
+        "groups": [
+            1
+        ],
+        "user_permissions": []
+    }
+}
+]
