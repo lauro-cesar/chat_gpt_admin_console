@@ -1,0 +1,7 @@
+contenttypes
+auth
+sites
+flatpages
+accounts
+documents
+organizations

@@ -1,0 +1,8 @@
+contenttypes.contenttype
+auth.permission
+auth.group
+sites.site
+flatpages.flatpage
+accounts.account
+documents
+organizations
