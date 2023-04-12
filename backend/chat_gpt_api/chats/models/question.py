@@ -14,7 +14,7 @@ from django.urls import reverse
 from django.core.cache import cache
 from django.utils.safestring import mark_safe
 from project.celery_tasks import app
-from django.contrib import messages
+from django.contrib import messages,admin
 from project.models import BaseModel, StackedModel
 
 
@@ -29,33 +29,42 @@ class Question(BaseModel):
     FLUTTER_ONE_TO_ONE = {}    
     READ_ONLY_FIELDS=['id','serial']
     ADMIN_LIST_EDITABLE=[]
-    ADMIN_LIST_DISPLAY=['label','rest_endpoint']
+    ADMIN_LIST_DISPLAY=['label','resposta','question_content','rest_endpoint']
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
     ADMIN_LIST_FILTER=["prompt__organization"]
     ADMIN_SEARCH_FILTER=[]
     ADMIN_DISPLAY_LINKS=[]
-    EXCLUDE_FROM_ADMIN=["answer"]
+    EXCLUDE_FROM_ADMIN=["generated_embedding","isReady","num_tokens"]
     CREATE_FIELDS=[]
     FORM_FIELDS=[]
     REST_BASENAME="question"
  
     TASKS={
-        'on_create':[],
-        'on_save':[],
+        'on_create':["retrieve_answer"],
+        'on_save':["retrieve_answer"],
         'on_delete':[]
     }
 
     question_content = models.TextField(verbose_name=_("Pergunta"))
+    generated_embedding = models.JSONField(default=dict,        blank=True,
+        null=True)
 
-    answer = models.ForeignKey(
-        "chats.Answer",
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("Resposta"),
-        related_name="answer_questions"
-    )
+    @property
+    def embedded_query(self):
+        query = None 
+        try:
+            query = self.generated_embedding.get("data",{})[0].get("embedding")
+        except Exception as e:
+            return None 
+    
+        return query
+    
+
+    num_tokens = models.PositiveSmallIntegerField(default=0,verbose_name=_("Total de tokens"))
+    isReady = models.BooleanField(default=False)
+
+
 
     prompt = models.ForeignKey(
         "chats.Prompt",
@@ -66,7 +75,14 @@ class Question(BaseModel):
         related_name="prompt_questions"
     )
 
-
+    @property
+    @admin.display(description="Resposta")
+    def resposta(self):
+        print(dir(self))
+        if self.isReady:
+            return mark_safe(f"<textarea>??</textarea>")
+        return mark_safe("<span>Aguardando resposta..</span>")
+    
     @property
     def label(self):
         return self.question_content

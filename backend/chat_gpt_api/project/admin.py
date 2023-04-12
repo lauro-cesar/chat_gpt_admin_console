@@ -27,7 +27,8 @@ class ProjectBaseModelAdmin(admin.ModelAdmin):
                 obj.belongs_to = request.user
 
             obj.modificado_por = request.user
-            obj.save()
+
+        obj.save()
 
     def get_queryset(self, request):
         """

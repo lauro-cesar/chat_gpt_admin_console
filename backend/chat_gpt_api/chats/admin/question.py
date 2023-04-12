@@ -25,6 +25,30 @@ class QuestionAdmin(BaseModelAdmin):
     list_display_links=Question.ADMIN_DISPLAY_LINKS
     filter_horizontal= Question.ADMIN_FILTER_HORIZONTAL    
     exclude = list(np.unique([item for sublist in [BaseModelAdmin.exclude,Question.EXCLUDE_FROM_ADMIN] for item in sublist]))
+    actions=["retrieve_answer"]
+
+    def retrieve_answer(self, request, queryset):
+        for obj in queryset:
+            try:
+                result =  app.send_task("retrieve_answer",[obj.id])
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f"{obj.label}: {e.__repr__()}",
+                    messages.ERROR,
+                )
+            else:
+                self.message_user(
+                    request,
+                    "{label}: enviado para a fila de processamento".format(label=obj),
+                    messages.SUCCESS,
+                )
+
+    retrieve_answer.short_description = _("Refaz a pergunta")
+    retrieve_answer.allowed_permissions = ['retrieve_answer']
+
+    def has_retrieve_answer_permission(self,request, obj=None):
+        return request.user.is_superuser  
     
 
     def has_delete_permission(self, request, obj=None):
@@ -38,7 +62,8 @@ class QuestionAdmin(BaseModelAdmin):
             checklist.append(user.is_operator)    
         
         if obj is not None:
-            checklist.append(obj.criado_por in [user]) 
+            if hasattr(obj,"criado_por"):
+                checklist.append(obj.criado_por in [user]) 
         return (True in checklist)
 
 
