@@ -21,14 +21,20 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from documents.models import Embedding
 from documents.serializers import EmbeddingSerializer, EmbeddingIdOnlySerializer
+
+from project.indexador import IndexadorDeDocumentos
 import tiktoken
 import openai
-from project.indexador import IndexadorDeDocumentos
+import redis
+import numpy as np
 
 
 
-
-
+redis_client = redis.Redis(
+    password=settings.REDIS_VECTOR_DB_PASSWORD,
+    port=settings.REDIS_VECTOR_DB_PORT,
+    host=settings.REDIS_VECTOR_DB_HOST
+)
 
 
 
@@ -38,8 +44,19 @@ from project.indexador import IndexadorDeDocumentos
 def on_create_embedding_index_task(object_pk):
     instance = Embedding.get_or_none(pk=object_pk)
     if instance:
-        if instance.isReadyForIndex:
-            print(f"Criar indice para {instance.document_page}")
+        if instance.isReadyForIndex and not instance.isIndexed:
+            key = f"{settings.VECTOR_DB_PREFIX}:{str(instance.id)}"
+            try:
+                content_embedding = np.array(instance.generated_embedding.get("data",{})[0].get("embedding"), dtype=np.float32).tobytes()
+                redis_client.hset(key,mapping={"content_vector":content_embedding})
+            except Exception as e:
+                logger.error(e.__repr__())
+            else:    
+                instance.isIndexed=True
+                instance.inProgress=False
+                instance.save()
+                print(f"Criado indice para {instance.document_page}")
+
     #     openai.api_key = instance.document.organization.chatgpt_api_token
     #     instance.num_tokens = len(token_encoding.encode(instance.embedding_raw_content))        
     #     instance.generated_embedding = openai.Embedding.create(input=instance.embedding_raw_content, engine='text-embedding-ada-002')        
@@ -51,11 +68,16 @@ def on_create_embedding_task(object_pk):
     token_encoding = tiktoken.get_encoding("cl100k_base")
     instance = Embedding.get_or_none(pk=object_pk)
     if instance:
-        openai.api_key = instance.document.organization.chatgpt_api_token
-        instance.num_tokens = len(token_encoding.encode(instance.embedding_raw_content))        
-        instance.generated_embedding = openai.Embedding.create(input=instance.embedding_raw_content, engine='text-embedding-ada-002')        
-        instance.isReadyForIndex=True
-        instance.save()
+        print(f"Criado incorporacao para {instance}")
+        try:
+            openai.api_key = instance.document.organization.chatgpt_api_token
+            instance.num_tokens = len(token_encoding.encode(instance.embedding_raw_content))        
+            instance.generated_embedding = openai.Embedding.create(input=instance.embedding_raw_content, engine='text-embedding-ada-002')        
+        except Exception as e:
+            logger.error(e.__repr__())
+        else:
+            instance.isReadyForIndex=True
+            instance.save()
 
 
 @shared_task(name="create_embeddings", max_retries=2, soft_time_limit=600)

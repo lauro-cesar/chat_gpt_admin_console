@@ -12,7 +12,7 @@ services:
       - .env-common.yaml
 
     volumes:
-      - "./redis-datastore/:/var/lib/redis"     
+      - "./redis-datastore:/data"     
       - ./redis.conf:/usr/local/etc/redis/redis.conf
 
     healthcheck:
@@ -29,6 +29,7 @@ services:
     env_file:
       - .env-db.yaml
       - .env-common.yaml
+      - .env-vector-db.yaml
     expose:
       - 5432
 
@@ -85,6 +86,7 @@ services:
     env_file:
       - .env-db.yaml
       - .env-api.yaml
+      - .env-vector-db.yaml
       - .env-redis-channels.yaml
       - .env-redis-queue.yaml
       - .env-redis-cache.yaml
@@ -111,6 +113,7 @@ services:
       - .env-redis-channels.yaml
       - .env-redis-queue.yaml
       - .env-redis-cache.yaml
+      - .env-vector-db.yaml
 
     volumes:
       - "./chat_gpt_api/:/home/chat_gpt_api/"

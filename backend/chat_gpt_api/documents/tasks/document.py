@@ -28,6 +28,16 @@ from PyPDF2 import PdfReader
 @shared_task(name="consolida_documento_indexado", max_retries=2, soft_time_limit=600)
 def on_consolida_documento_indexado_task(object_pk):
     print(f"Consolidando documento: {object_pk}")
+    instance = Document.get_or_none(pk=object_pk)
+    total_docs = instance.document_embeddings.count()
+    total_indexado = instance.document_embeddings.filter(isIndexed=True).count()
+    if total_docs == total_indexado:
+        instance.isIndexed=True 
+        instance.inProgress=False 
+        instance.save()
+
+    
+
 
 
 @shared_task(name="monitora_indexador", max_retries=2, soft_time_limit=600)
@@ -54,9 +64,12 @@ def on_extract_raw_embedding_task(object_pk):
     instance.isIndexed=False
     instance.save()
     for p in pdf_obj.pages:
-        instance.document_embeddings.create(**{
-            "document_page":page,
-            "embedding_raw_content":p.extract_text()})
+        texto = p.extract_text()
+        texto = texto.strip()
+        if len(texto):
+            instance.document_embeddings.create(**{
+                "document_page":page,
+                "embedding_raw_content":texto.strip()})
         page +=1
 
     print(f"Extracting Raw embedding for {instance}")

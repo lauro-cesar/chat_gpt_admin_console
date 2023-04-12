@@ -35,3 +35,16 @@ text_embedding = VectorField("content_vector",
     }
 )
 fields = [text_embedding]
+
+
+redis_client = redis.Redis(
+    password=REDIS_VECTOR_DB_PASSWORD,
+    port=REDIS_VECTOR_DB_PORT,
+    host=REDIS_VECTOR_DB_HOST
+)
+
+try:
+    redis_client.ft(VECTOR_DB_HNSW_INDEX_NAME).info()
+except Exception as e:
+    redis_client.ft(VECTOR_DB_HNSW_INDEX_NAME).create_index(fields = fields,definition = IndexDefinition(prefix=[VECTOR_DB_PREFIX], index_type=IndexType.HASH))
+ 
