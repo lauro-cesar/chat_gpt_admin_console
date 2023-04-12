@@ -15,10 +15,10 @@ from django.core.cache import cache
 from django.utils.safestring import mark_safe
 from project.celery_tasks import app
 from django.contrib import messages
-from project.models import BaseModel, StackedModel
+from project.models import BaseModel, StackedModel, BaseModelForeignMixin
 
 
-class Organization(BaseModel):
+class Organization(BaseModelForeignMixin,BaseModel):
     MODEL_LIST_ORDER_VALUE = 0
     SERIALIZABLES =['id','label','serial']
     FLUTTER_TYPES = {
@@ -33,7 +33,7 @@ class Organization(BaseModel):
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
     ADMIN_LIST_FILTER=[]
-    ADMIN_SEARCH_FILTER=[]
+    ADMIN_SEARCH_FILTER=["organization_name"]
     ADMIN_DISPLAY_LINKS=[]
     EXCLUDE_FROM_ADMIN=[]
     CREATE_FIELDS=[]
@@ -47,6 +47,7 @@ class Organization(BaseModel):
     }
 
     organization_name = models.CharField(max_length=256,verbose_name=_("Nome da organização"))
+    chatgpt_api_token = models.CharField(max_length=512,verbose_name=_("Token da API"))
 
     @property
     def label(self):

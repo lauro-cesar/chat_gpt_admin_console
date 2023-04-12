@@ -4,3 +4,4 @@ All rights reserved under BSD 3-Clause License.
 """
 
 from .document import DocumentSerializer,DocumentIdOnlySerializer, DocumentIdOnlySerializer,  SerialDocumentSerializer
+from .embedding import EmbeddingSerializer,EmbeddingIdOnlySerializer, EmbeddingIdOnlySerializer,  SerialEmbeddingSerializer

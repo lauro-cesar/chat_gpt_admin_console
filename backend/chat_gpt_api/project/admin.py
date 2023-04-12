@@ -37,8 +37,9 @@ class ProjectBaseModelAdmin(admin.ModelAdmin):
         qs = self.model._default_manager.get_queryset()
 
         if True not in [request.user.is_superuser, request.user.is_operator]:
-            qs = qs.filter(criado_por=request.user.id)
-
+            if hasattr(request,"criado_por"):
+                qs = qs.filter(criado_por=request.user.id)
+            
         ordering = self.get_ordering(request)
         if ordering:
             qs = qs.order_by(*ordering)

@@ -13,3 +13,13 @@ from .document import (
     SerialDocumentViewSet,
     DocumentIdOnlyViewSet,    
     DocumentViewSet)
+from .embedding import (
+    EmbeddingTemplateView,
+    EmbeddingDetailView, 
+    EmbeddingListView, 
+    EmbeddingUpdateView, 
+    EmbeddingCreateView, 
+    EmbeddingDeleteView,
+    SerialEmbeddingViewSet,
+    EmbeddingIdOnlyViewSet,    
+    EmbeddingViewSet)

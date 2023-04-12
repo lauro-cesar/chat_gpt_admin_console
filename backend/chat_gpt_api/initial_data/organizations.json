@@ -1,0 +1,19 @@
+[
+{
+    "model": "organizations.organization",
+    "pk": 1,
+    "fields": {
+        "criado_por": null,
+        "modificado_por": null,
+        "removido_por": null,
+        "belongs_to": null,
+        "dateCreated": "2023-04-10T22:48:30.738",
+        "lastModified": "2023-04-10T22:48:30.738",
+        "isActive": true,
+        "isPublic": false,
+        "isRemoved": false,
+        "organization_name": "Sebrae SP",
+        "chatgpt_api_token": "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"
+    }
+}
+]

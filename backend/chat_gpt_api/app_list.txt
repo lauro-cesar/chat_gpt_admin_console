@@ -3,5 +3,6 @@ auth
 sites
 flatpages
 accounts
-documents
 organizations
+documents
+chats

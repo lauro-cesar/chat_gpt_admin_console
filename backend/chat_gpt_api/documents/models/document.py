@@ -14,11 +14,11 @@ from django.urls import reverse
 from django.core.cache import cache
 from django.utils.safestring import mark_safe
 from project.celery_tasks import app
-from django.contrib import messages
-from project.models import BaseModel, StackedModel
+from django.contrib import messages,admin
+from project.models import BaseModel, StackedModel,BaseModelForeignMixin
 
 
-class Document(BaseModel):
+class Document(BaseModel,BaseModelForeignMixin):
     MODEL_LIST_ORDER_VALUE = 0
     SERIALIZABLES =['id','label','serial']
     FLUTTER_TYPES = {
@@ -29,28 +29,42 @@ class Document(BaseModel):
     FLUTTER_ONE_TO_ONE = {}    
     READ_ONLY_FIELDS=['id','serial']
     ADMIN_LIST_EDITABLE=[]
-    ADMIN_LIST_DISPLAY=['label','rest_endpoint']
+    ADMIN_LIST_DISPLAY=['label','num_tokens','isIndexed','inProgress','rest_endpoint']
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
-    ADMIN_LIST_FILTER=[]
-    ADMIN_SEARCH_FILTER=[]
+    ADMIN_LIST_FILTER=["organization"]
+    ADMIN_SEARCH_FILTER=["document_file"]
     ADMIN_DISPLAY_LINKS=[]
-    EXCLUDE_FROM_ADMIN=["num_tokens","metadata"]
+    EXCLUDE_FROM_ADMIN=["num_tokens","metadata",'isIndexed','inProgress']
     CREATE_FIELDS=[]
     FORM_FIELDS=[]
     REST_BASENAME="document"
  
     TASKS={
-        'on_create':[],
+        'on_create':["extract_raw_embedding"],
         'on_save':[],
         'on_delete':[]
     }
 
 
-    document_name = models.CharField(max_length=128,verbose_name=_("Nome do documento"))
-    num_tokens = models.PositiveIntegerField(default=0,verbose_name=_("Total de Tokens"))
+    isIndexed = models.BooleanField(default=False)
+    inProgress = models.BooleanField(default=False)
     document_file = models.FileField(verbose_name=_("Documento anexado"))
     metadata = models.JSONField(default=dict,blank=True,null=True)
+
+
+
+    @property
+    @admin.display(description=_("Total de tokens no documento"))
+    def num_tokens(self):   
+        total = 0
+        try:
+            total = sum(list(map( lambda x:x.num_tokens,self.document_embeddings.all())))
+        except Exception as e:
+            logger.error(e.__repr__())
+ 
+        return total
+    
 
     organization = models.ForeignKey(
         "organizations.Organization",
@@ -64,7 +78,7 @@ class Document(BaseModel):
 
     @property
     def label(self):
-        return  self.document_name
+        return  f"{self.document_file.name}"
 
 
     class Meta(BaseModel.Meta):

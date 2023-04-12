@@ -25,6 +25,32 @@ class DocumentAdmin(BaseModelAdmin):
     list_display_links=Document.ADMIN_DISPLAY_LINKS
     filter_horizontal= Document.ADMIN_FILTER_HORIZONTAL    
     exclude = list(np.unique([item for sublist in [BaseModelAdmin.exclude,Document.EXCLUDE_FROM_ADMIN] for item in sublist]))
+    actions=["extract_raw_embedding"]
+
+    def extract_raw_embedding(self, request, queryset):
+        for obj in queryset:
+            try:
+                result =  app.send_task("extract_raw_embedding",[obj.id])
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f"{obj.label}: {e.__repr__()}",
+                    messages.ERROR,
+                )
+            else:
+                self.message_user(
+                    request,
+                    "{label}: enviado para a fila de processamento".format(label=obj),
+                    messages.SUCCESS,
+                )
+
+    extract_raw_embedding.short_description = _("Re-extract documento")
+    extract_raw_embedding.allowed_permissions = ['extract_raw_embedding']
+
+    def has_extract_raw_embedding_permission(self,request, obj=None):
+        return request.user.is_superuser  
+        
+
     
 
     def has_delete_permission(self, request, obj=None):

@@ -30,3 +30,6 @@ qrcode
 xlsxwriter
 django-filter
 aiofiles
+PyPDF2>=2.10.4
+tiktoken
+openai

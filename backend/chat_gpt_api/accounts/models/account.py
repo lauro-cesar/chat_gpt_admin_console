@@ -33,8 +33,8 @@ class Account(AbstractUser, BaseModel):
         "authToken",
     ]
     READ_ONLY_FIELDS = []
-    ADMIN_LIST_EDITABLE = []
-    ADMIN_LIST_DISPLAY = ["username", "first_name", "last_name","is_operator","is_rootuser"]
+    ADMIN_LIST_EDITABLE = ["privilege_level"]
+    ADMIN_LIST_DISPLAY = ["username", "first_name", "last_name","is_operator","is_rootuser","privilege_level"]
     ADMIN_ORDERING = []
     ADMIN_FILTER_HORIZONTAL = ["groups", "user_permissions"]
     ADMIN_LIST_FILTER = []
