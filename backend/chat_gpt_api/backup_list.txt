@@ -4,5 +4,6 @@ auth.group
 sites.site
 flatpages.flatpage
 accounts.account
-documents
 organizations
+documents
+chats

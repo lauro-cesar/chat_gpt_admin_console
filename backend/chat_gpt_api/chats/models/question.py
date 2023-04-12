@@ -32,10 +32,10 @@ class Question(BaseModel):
     ADMIN_LIST_DISPLAY=['label','rest_endpoint']
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
-    ADMIN_LIST_FILTER=[]
+    ADMIN_LIST_FILTER=["prompt__organization"]
     ADMIN_SEARCH_FILTER=[]
     ADMIN_DISPLAY_LINKS=[]
-    EXCLUDE_FROM_ADMIN=[]
+    EXCLUDE_FROM_ADMIN=["answer"]
     CREATE_FIELDS=[]
     FORM_FIELDS=[]
     REST_BASENAME="question"
@@ -47,6 +47,7 @@ class Question(BaseModel):
     }
 
     question_content = models.TextField(verbose_name=_("Pergunta"))
+
     answer = models.ForeignKey(
         "chats.Answer",
         blank=True,
@@ -55,6 +56,7 @@ class Question(BaseModel):
         verbose_name=_("Resposta"),
         related_name="answer_questions"
     )
+
     prompt = models.ForeignKey(
         "chats.Prompt",
         null=True,

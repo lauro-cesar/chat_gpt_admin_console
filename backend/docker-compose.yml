@@ -2,6 +2,27 @@ version: "3.3"
 
 services:
 
+  project_redis_vector_db:
+    image: redis/redis-stack-server:latest
+    expose:
+      - 6379    
+
+    env_file:
+      - .env-vector-db.yaml
+      - .env-common.yaml
+
+    volumes:
+      - "./redis-datastore/:/var/lib/redis"     
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "6379", "ping"]
+      interval: 2s
+      timeout: 1m30s
+      retries: 5
+      start_period: 5s
+
+
   backend_db:
     restart: always
     image: postgres:alpine
@@ -75,6 +96,7 @@ services:
       - project_redis_channels
       - project_redis_cache
       - project_redis_queue
+      - project_redis_vector_db
 
   nginx_static_server:
     restart: always
@@ -92,6 +114,7 @@ services:
 
     volumes:
       - "./chat_gpt_api/:/home/chat_gpt_api/"
+
     ports:
       - 7072:80
 
@@ -101,6 +124,7 @@ services:
       - project_redis_channels
       - project_redis_cache
       - project_redis_queue
+      - project_redis_vector_db
 
 volumes:
   static_volume:

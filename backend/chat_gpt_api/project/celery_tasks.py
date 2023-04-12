@@ -17,14 +17,29 @@ app = Celery(
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.conf.update(result_expires=3600, enable_utc=True, timezone="America/Sao_Paulo")
 app.autodiscover_tasks()
-# @app.on_after_configure.connect
-# def setup_periodic_tasks(sender, **kwargs):
-#     sender.add_periodic_task(
-#         crontab(minute='*/1'),
-#         send_notifications.s(),
-#     )
-#     app.send_task("send_notifications")
-#
-# @app.task
-# def send_notifications():
-#     app.send_task("send_notifications")
+
+
+@app.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    sender.add_periodic_task(
+        crontab(minute='*/1'),
+        create_embeddings.s(),
+    )
+    app.send_task("create_embeddings")
+
+    sender.add_periodic_task(
+        crontab(minute='*/1'),
+        monitora_indexador.s(),
+    )
+    app.send_task("monitora_indexador")
+
+
+
+@app.task
+def monitora_indexador():
+    app.send_task("monitora_indexador")
+
+
+@app.task
+def create_embeddings():
+    app.send_task("create_embeddings")

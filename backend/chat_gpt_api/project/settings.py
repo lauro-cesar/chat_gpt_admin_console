@@ -6,6 +6,13 @@ import firebase_admin
 from firebase_admin import credentials
 from typing import Any, Dict
 from django.utils.translation import gettext as _, gettext_lazy as l_
+import tiktoken
+import openai
+
+
+# First Run, just for downlaod encoding
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -57,6 +64,20 @@ DATABASE_HOST = (os.environ.get("DATABASE_HOST", default="127.0.0.1"),)
 DATABASE_ENGINE= os.environ.get(
             "DATABASE_ENGINE", default="django.db.backends.postgresql"
         ),
+
+
+#OpenAI Index settings
+REDIS_VECTOR_DB_HOST=  os.environ.get("REDIS_VECTOR_DB_HOST", default="project_redis_vector_db") 
+REDIS_VECTOR_DB_PORT=  os.environ.get("REDIS_VECTOR_DB_PORT", default=6379)
+REDIS_VECTOR_DB_PASSWORD= os.environ.get("REDIS_VECTOR_DB_PASSWORD", default="")
+VECTOR_DB_VECTOR_DIM =  1024
+VECTOR_DB_VECTOR_NUMBER = 0                 
+VECTOR_DB_INDEX_NAME = "embeddings-index"           
+VECTOR_DB_HNSW_INDEX_NAME = f"{VECTOR_DB_INDEX_NAME}_HNSW"
+VECTOR_DB_PREFIX = "doc"                            
+VECTOR_DB_DISTANCE_METRIC = "COSINE"
+
+
 
 REDIS_CACHE_HOST = os.environ.get("REDIS_CACHE_HOST", default="localhost")
 REDIS_CACHE_PORT = os.environ.get("REDIS_CACHE_PORT", default=6379)

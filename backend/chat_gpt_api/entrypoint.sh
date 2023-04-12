@@ -18,15 +18,20 @@ for app in $reset_migrations_list;
     echo "removing migrations of $app"
   done
 
-rm -rf .venv
+
+
 mkdir -p static/
 mkdir -p media/
 mkdir -p templates/
-python3 -m venv .venv
+
+
+if [ ! -d ".venv" ]; then 
+  python3 -m venv .venv
+fi
+
 source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
-
 
 if [ -z "${DATABASE_PORT}" ] ; then
     until nc -z "${DATABASE_HOST}" "${DATABASE_PORT}"; do

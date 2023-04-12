@@ -170,7 +170,7 @@ class BaseImageMedia(ModelBaseClass):
         abstract = True
 
 
-class BaseModelForeignMixin:
+class BaseModelForeignMixin(models.Model):
     class Meta:
         abstract = True
 
@@ -211,7 +211,7 @@ class BaseModelForeignMixin:
     )
 
 
-# Be careful with related_name and related_query_name. Why?
+
 class BaseModelMixin(ModelBaseClass):
     class Meta:
         abstract = True
@@ -283,7 +283,7 @@ class BaseModelMixin(ModelBaseClass):
             return [{}]
 
 
-class BaseModel(BaseModelMixin, BaseModelForeignMixin):
+class BaseModel(BaseModelMixin):
     class Meta:
         abstract = True
         ordering = ["lastModified"]

@@ -9,3 +9,4 @@ All rights reserved under BSD 3-Clause License.
 """
 
 from .document import DocumentConsumer,DocumentCollectionConsumer, DocumentCollectionIdOnlyConsumer
+from .embedding import EmbeddingConsumer,EmbeddingCollectionConsumer, EmbeddingCollectionIdOnlyConsumer
