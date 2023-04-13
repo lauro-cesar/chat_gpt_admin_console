@@ -29,26 +29,27 @@ class Question(BaseModel):
     FLUTTER_ONE_TO_ONE = {}    
     READ_ONLY_FIELDS=['id','serial']
     ADMIN_LIST_EDITABLE=[]
-    ADMIN_LIST_DISPLAY=['label','resposta','question_content','rest_endpoint']
+    ADMIN_LIST_DISPLAY=['label','resposta','question_content','isReadyToAsk','isReady','hasErrors','rest_endpoint']
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
-    ADMIN_LIST_FILTER=["prompt__organization"]
+    ADMIN_LIST_FILTER=["prompt__organization",'isReadyToAsk','isReady','hasErrors']
     ADMIN_SEARCH_FILTER=[]
     ADMIN_DISPLAY_LINKS=[]
-    EXCLUDE_FROM_ADMIN=["generated_embedding","isReady","num_tokens"]
+    EXCLUDE_FROM_ADMIN=["generated_embedding","isReady","num_tokens","lastLog"]
     CREATE_FIELDS=[]
     FORM_FIELDS=[]
     REST_BASENAME="question"
  
     TASKS={
-        'on_create':["retrieve_answer"],
-        'on_save':["retrieve_answer"],
+        'on_create':["prepare_question"],
+        'on_save':["prepare_question"],
         'on_delete':[]
     }
 
     question_content = models.TextField(verbose_name=_("Pergunta"))
     generated_embedding = models.JSONField(default=dict,        blank=True,
         null=True)
+
 
     @property
     def embedded_query(self):
@@ -63,7 +64,18 @@ class Question(BaseModel):
 
     num_tokens = models.PositiveSmallIntegerField(default=0,verbose_name=_("Total de tokens"))
     isReady = models.BooleanField(default=False)
+    isReadyToAsk = models.BooleanField(default=False)
+    hasErrors = models.BooleanField(default=False)
+    lastLog = models.JSONField(default=dict,blank=True,null=True)
 
+    answer = models.ForeignKey(
+        "chats.Answer",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Resposta"),
+        related_name="questions_using_this_answer"
+    )
 
 
     prompt = models.ForeignKey(
@@ -77,11 +89,13 @@ class Question(BaseModel):
 
     @property
     @admin.display(description="Resposta")
-    def resposta(self):
-        print(dir(self))
-        if self.isReady:
-            return mark_safe(f"<textarea>??</textarea>")
-        return mark_safe("<span>Aguardando resposta..</span>")
+    def resposta(self): 
+        try:
+            answer_content = self.answer.answer_content
+        except Exception as e:
+            answer_content = "Aguardando resposta"
+
+        return mark_safe(f"<textarea>{answer_content}</textarea>")
     
     @property
     def label(self):

@@ -32,7 +32,7 @@ class Answer(BaseModel):
     ADMIN_LIST_DISPLAY=['label','rest_endpoint']
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
-    ADMIN_LIST_FILTER=["question__prompt__organization"]
+    ADMIN_LIST_FILTER=["questions_using_this_answer__prompt__organization"]
     ADMIN_SEARCH_FILTER=[]
     ADMIN_DISPLAY_LINKS=[]
     EXCLUDE_FROM_ADMIN=[]
@@ -48,14 +48,8 @@ class Answer(BaseModel):
 
     answer_content = models.TextField(verbose_name=_("Resposta"))
 
-    question = models.ForeignKey(
-        "chats.Question",
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("Pergunta"),
-        related_name="answers_for_this_question"
-    )
+
+
 
     
     @property

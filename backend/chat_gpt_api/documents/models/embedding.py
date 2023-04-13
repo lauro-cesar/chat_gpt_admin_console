@@ -29,10 +29,10 @@ class Embedding(BaseModel,BaseModelForeignMixin):
     FLUTTER_ONE_TO_ONE = {}    
     READ_ONLY_FIELDS=['id','serial']
     ADMIN_LIST_EDITABLE=[]
-    ADMIN_LIST_DISPLAY=['label','document_page','isIndexed','inProgress','isReadyForIndex','num_tokens','rest_endpoint']
+    ADMIN_LIST_DISPLAY=['label','document_page','isIndexed','inProgress','isReadyForIndex','num_tokens','hasErrors','rest_endpoint']
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
-    ADMIN_LIST_FILTER=["document__organization"]
+    ADMIN_LIST_FILTER=["document__organization","hasErrors",'isIndexed','inProgress','isReadyForIndex']
     ADMIN_SEARCH_FILTER=["document__document_file"]
     ADMIN_DISPLAY_LINKS=[]
     EXCLUDE_FROM_ADMIN=["isIndexed","inProgress"]
@@ -46,6 +46,8 @@ class Embedding(BaseModel,BaseModelForeignMixin):
         'on_delete':[]
     }
 
+    hasErrors = models.BooleanField(default=False)
+    lastLog = models.JSONField(default=dict, blank=True,null=True)
     isIndexed = models.BooleanField(default=False)
     inProgress = models.BooleanField(default=False)
     isReadyForIndex = models.BooleanField(default=False)

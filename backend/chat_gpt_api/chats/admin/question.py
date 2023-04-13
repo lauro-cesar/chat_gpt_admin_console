@@ -25,12 +25,12 @@ class QuestionAdmin(BaseModelAdmin):
     list_display_links=Question.ADMIN_DISPLAY_LINKS
     filter_horizontal= Question.ADMIN_FILTER_HORIZONTAL    
     exclude = list(np.unique([item for sublist in [BaseModelAdmin.exclude,Question.EXCLUDE_FROM_ADMIN] for item in sublist]))
-    actions=["retrieve_answer"]
+    actions=["prepare_question"]
 
-    def retrieve_answer(self, request, queryset):
+    def prepare_question(self, request, queryset):
         for obj in queryset:
             try:
-                result =  app.send_task("retrieve_answer",[obj.id])
+                result =  app.send_task("prepare_question",[obj.id])
             except Exception as e:
                 self.message_user(
                     request,
@@ -44,10 +44,10 @@ class QuestionAdmin(BaseModelAdmin):
                     messages.SUCCESS,
                 )
 
-    retrieve_answer.short_description = _("Refaz a pergunta")
-    retrieve_answer.allowed_permissions = ['retrieve_answer']
+    prepare_question.short_description = _("Prepara a pergunta")
+    prepare_question.allowed_permissions = ['prepare_question']
 
-    def has_retrieve_answer_permission(self,request, obj=None):
+    def has_prepare_question_permission(self,request, obj=None):
         return request.user.is_superuser  
     
 

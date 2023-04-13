@@ -53,7 +53,9 @@ class Prompt(BaseModel):
     prompt_max_tokens=models.PositiveSmallIntegerField(verbose_name=_("Máximo de tokens para a resposta"), default=100)
     prompt_frequency_penalty = models.IntegerField(verbose_name=_("Penalizar com base na frequencia de tokens"),default=0,help_text=_("Informar -0.2 até 0.2, quanto maior menor a probabilidade do chat repetir os tópicos"))
     prompt_presence_penalty = models.IntegerField(verbose_name=_("Penalizar com base na frequencia de tokens"),default=0, help_text=_("Informar -0.2 até 0.2, quanto maior menor a probabilidade do chat se repetir mesmas frases"))
-    
+    lastLog = models.JSONField(default=dict,blank=True,null=True)
+    hasErrors = models.BooleanField(default=False)
+
     organization = models.ForeignKey(
         "organizations.Organization",
         related_name="organization_chats",

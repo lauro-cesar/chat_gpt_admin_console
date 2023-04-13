@@ -3,10 +3,12 @@ version: "3.3"
 services:
 
   project_redis_vector_db:
-    image: redis/redis-stack-server:latest
+    image: redis/redis-stack:latest
     expose:
       - 6379    
-
+    ports:
+      - 127.0.0.1:8081:8001
+    
     env_file:
       - .env-vector-db.yaml
       - .env-common.yaml

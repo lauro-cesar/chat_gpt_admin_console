@@ -4,7 +4,10 @@ __pycache__/
 *$py.class
 service-account-file.json
 .bash_history
-bks/*.json
+bks/*
+backend/chat_gpt_api/bks/*
+backend/chat_gpt_api/media/*
+backend/redis-datastore/*
 redis-datastore/*
 organizations.json
 #*.env-*.yaml
