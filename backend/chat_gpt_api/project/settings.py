@@ -70,8 +70,8 @@ DATABASE_ENGINE= os.environ.get(
 REDIS_VECTOR_DB_HOST=  os.environ.get("REDIS_VECTOR_DB_HOST", default="project_redis_vector_db") 
 REDIS_VECTOR_DB_PORT=  os.environ.get("REDIS_VECTOR_DB_PORT", default=6379)
 REDIS_VECTOR_DB_PASSWORD= os.environ.get("REDIS_VECTOR_DB_PASSWORD", default="")
-VECTOR_DB_VECTOR_DIM =  1024
-VECTOR_DB_VECTOR_NUMBER = 0                 
+VECTOR_DB_VECTOR_DIM =  1536
+VECTOR_DB_VECTOR_NUMBER = 1000                
 VECTOR_DB_INDEX_NAME = "embeddings-index"           
 VECTOR_DB_HNSW_INDEX_NAME = f"{VECTOR_DB_INDEX_NAME}_HNSW"
 VECTOR_DB_PREFIX = "doc"                            

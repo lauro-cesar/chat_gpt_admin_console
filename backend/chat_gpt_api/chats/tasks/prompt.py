@@ -43,7 +43,7 @@ def on_prepare_question_task(question_pk):
     question = Question.get_or_none(pk=question_pk,isReadyToAsk=False,hasErrors=False)
     
     if question:
-        print("Preparando a pergunta")
+
         token_encoding = tiktoken.get_encoding("cl100k_base")
         try:
             openai.api_key = question.prompt.organization.chatgpt_api_token
@@ -55,7 +55,6 @@ def on_prepare_question_task(question_pk):
             question.save()            
             logger.error(e.__repr__())
         else:
-            print(redis_client.ft(settings.VECTOR_DB_HNSW_INDEX_NAME).info())
 
             try:
                 hybrid_fields = "*"
@@ -65,14 +64,10 @@ def on_prepare_question_task(question_pk):
                 base_query = f'{hybrid_fields}=>[KNN {k} @{vector_field} $vector AS vector_score]'
                 query = (Query(base_query).return_fields(*return_fields).sort_by("vector_score").paging(0, k).dialect(2))            
                 params_dict = {"vector": np.array(question.embedded_query).astype(dtype=np.float32).tobytes()}
-                results = redis_client.ft(settings.VECTOR_DB_HNSW_INDEX_NAME).search(query, params_dict)
-               
-                print(results)
-
-
+                results = redis_client.ft(settings.VECTOR_DB_HNSW_INDEX_NAME).search(query, params_dict)                        
                 for i, article in enumerate(results.docs):
                     score = 1 - float(article.vector_score)
-                    print(f"{i}. {article.title} (Score: {round(score ,3) })")
+                    print(f"{i}. {article} (Score: {round(score ,3) })")
             
             except Exception as e:
                 print(e.__repr__())

@@ -1,21 +1,22 @@
 version: "3.3"
 
 services:
-
   project_redis_vector_db:
-    image: redis/redis-stack:latest
+    build:
+      context: ./redis-vector-db
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./redis-data:/data/
     expose:
-      - 6379    
+      - 6379 
+      
     ports:
-      - 127.0.0.1:8081:8001
+      - 8081:8001
     
     env_file:
       - .env-vector-db.yaml
       - .env-common.yaml
-
-    volumes:
-      - "./redis-datastore:/data"     
-      - ./redis.conf:/usr/local/etc/redis/redis.conf
 
     healthcheck:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "6379", "ping"]

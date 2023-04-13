@@ -46,13 +46,9 @@ def on_create_embedding_index_task(object_pk):
     if instance:
         if instance.isReadyForIndex and not instance.isIndexed:
             key = f"{settings.VECTOR_DB_PREFIX}:{str(instance.id)}"
-
             try:
-                content_embedding = np.array(instance.generated_embedding.get("data",{})[0].get("embedding"), dtype=np.float32).tobytes()
-                
-                rs = redis_client.ft(settings.VECTOR_DB_HNSW_INDEX_NAME)
-                rs.client.hset(key,mapping={"content_vector":content_embedding})
-            
+                content_embedding = np.array(instance.generated_embedding.get("data",{})[0].get("embedding"), dtype=np.float32).tobytes()                                
+                redis_client.hset(key,mapping={"content_vector":content_embedding})            
             except Exception as e:
                 instance.hasErrors = True
                 instance.lastLog=e.__repr__()

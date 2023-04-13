@@ -3,16 +3,18 @@
 
 ## Features
 
-- Create organizations;
-- Create Users;
-- Create prompts;
-- Create authenticated pages for prompts;
-- Apply templates to Prompts;
-- Embeddings from PDFS;
-- Embeddings from Text Files;
-- Embeddings from web pages through built in scrapper;
-- Reports;
-- Realtime usage data;
+
+- [x] Create organizations;
+- [x] Create Users;
+- [x] Create prompts;
+- [ ]Create authenticated pages for prompts;
+- [ ] Apply templates to Prompts;
+- [x] Embeddings from PDFS;
+- [ ] Embeddings from Text Files;
+- [ ] Embeddings from web pages through built in scrapper;
+- [ ] Reports;
+- [ ] Realtime usage data;
+- [ ] Rest API
 
 
 Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
