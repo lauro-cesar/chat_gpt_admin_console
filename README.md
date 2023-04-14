@@ -21,5 +21,12 @@
 - [x] Rest API
 
 
+## How to use (via Web interface)
+
+## How to use: (via Rest interface)
+
+
+
+
 Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
