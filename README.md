@@ -4,10 +4,13 @@
 ## Features
 
 
-- [x] Create organizations;
-- [x] Create Users;
-- [x] Create prompts;
-- [x] Prompt engineering
+- [x] Create organizations
+- [x] Create knowledge bases
+- [x] Upload PDFs to knowledge bases
+- [x] Create Users
+- [x] Create prompts (text-davinci-003 only)
+- [x] Prompt engineering (text-davinci-003 only)
+- [x] Ask questions based on documents from knowledge base (Via Console and REST)
 - [ ] Create authenticated pages for prompts;
 - [ ] Apply templates to Prompts;
 - [x] Embeddings from PDFS;
@@ -15,7 +18,7 @@
 - [ ] Embeddings from web pages through built in scrapper;
 - [ ] Reports;
 - [ ] Realtime usage data;
-- [ ] Rest API
+- [x] Rest API
 
 
 Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
