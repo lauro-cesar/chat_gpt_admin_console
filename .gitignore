@@ -13,7 +13,8 @@ redis-datastore/*
 backend/redis-data/*
 organizations.json
 backend/chat_gpt_api/initial_data/*
-
+connect_to.sh
+upload_to.sh
 #*.env-*.yaml
 
 # flutter artifacts
