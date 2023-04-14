@@ -12,3 +12,4 @@ from .prompt_template import PromptTemplateConsumer,PromptTemplateCollectionCons
 from .prompt import PromptConsumer,PromptCollectionConsumer, PromptCollectionIdOnlyConsumer
 from .question import QuestionConsumer,QuestionCollectionConsumer, QuestionCollectionIdOnlyConsumer
 from .answer import AnswerConsumer,AnswerCollectionConsumer, AnswerCollectionIdOnlyConsumer
+from .chat_session import ChatSessionConsumer,ChatSessionCollectionConsumer, ChatSessionCollectionIdOnlyConsumer

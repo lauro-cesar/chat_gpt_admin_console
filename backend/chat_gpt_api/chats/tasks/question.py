@@ -19,8 +19,191 @@ import base64
 from project.celery_tasks import app
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
-from chats.models import Question
+from chats.models import Question, Answer
 from chats.serializers import QuestionSerializer, QuestionIdOnlySerializer
+
+import tiktoken
+import openai
+import redis
+import numpy as np
+
+# from openai.embeddings_utils import (
+  
+#     distances_from_embeddings,
+#     tsne_components_from_embeddings,
+  
+#     indices_of_nearest_neighbors_from_distances,
+# )
+
+
+from redis.commands.search.query import Query
+
+redis_client = redis.Redis(password=settings.REDIS_VECTOR_DB_PASSWORD,port=settings.REDIS_VECTOR_DB_PORT,host=settings.REDIS_VECTOR_DB_HOST)
+
+
+@shared_task(name="retrieve_answer", max_retries=2, soft_time_limit=600)
+def on_retrieve_answer_task(question_pk):
+    token_encoding = tiktoken.get_encoding("cl100k_base")
+    question = Question.get_or_none(pk=question_pk,hasErrors=False)
+    if question:
+        separator_len = len(token_encoding.encode("\n*"))
+
+        print("Ask question")
+        print(question.chat_session.prompt.knowledge_base)
+        print(question.chat_session.prompt.knowledge_base.vector_index_name)
+        print(question.chat_session.prompt.knowledge_base.vector_prefix)
+        print(question.chat_session.prompt.prompt_command)
+
+
+        # MAX_CONTEXT_SIZE
+
+
+        
+
+     
+        context_entries=[]
+
+    
+        try:
+            hybrid_fields = "*"
+            k= 20
+            return_fields= ["vector_score","embedding_raw_content","generated_embedding"]
+            vector_field = "generated_embedding"
+            base_query = f'{hybrid_fields}=>[KNN {k} @{vector_field} $vector AS vector_score]'
+            query = (Query(base_query).return_fields(*return_fields).sort_by("vector_score").paging(0, k).dialect(2))            
+            params_dict = {"vector": np.array(question.embedded_query).astype(dtype=np.float32).tobytes()}        
+            results = redis_client.ft(question.chat_session.prompt.knowledge_base.vector_index_name).search(query, params_dict)  
+
+          
+
+            for i, result in enumerate(results.docs):
+                score = 1 - float(result.vector_score)
+
+                if(score >=settings.COSINE_SIM_THRESHOLD):
+                    prompt_context = "\n".join(context_entries)
+
+                    total_tokens = token_encoding.encode(prompt_context).__len__()
+                    if total_tokens < settings.MAX_CONTEXT_SIZE:                       
+                        context_entries.append(result.embedding_raw_content)
+
+                    # print(settings.COSINE_SIM_THRESHOLD)
+                    # print(result.vector_score)
+
+                    # tokens = token_encoding.encode(result.embedding_raw_content)
+                    # print(len(tokens))
+                    # print(separator_len)
+                
+
+                    # print(len())
+
+                    
+
+
+
+
+              
+
+
+           
+                
+
+                
+                
+        
+
+        except Exception as e:
+            print(e.__repr__())
+        
+        else:
+            header = f"""{question.chat_session.prompt.prompt_command}\nContext:{prompt_context}\nQ:{question.question_content}\nA:"""
+            openai.api_key = question.chat_session.prompt.knowledge_base.organization.chatgpt_api_token
+
+            MODEL = "text-davinci-003"
+            # response = openai.ChatCompletion.create(
+            #     model=MODEL,
+            #     messages=[
+            #         {"role": "system", "content": f"{question.chat_session.prompt.prompt_command}"},
+            #         {"role": "user", "content": f"{question.question_content}"},
+            #     ],
+            #     temperature=0,
+            # )
+
+    # messages=[
+    #     {"role": "system", "content": "You are a helpful assistant."},
+    #     {"role": "user", "content": "Knock knock."},
+    #     {"role": "assistant", "content": "Who's there?"},
+    #     {"role": "user", "content": "Orange."},
+    # ],
+
+
+            resposta = openai.Completion.create(
+                prompt=header,
+                temperature=0,
+                max_tokens=settings.MAX_CONTEXT_SIZE,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0,
+                model= MODEL
+
+            )["choices"][0]["text"].strip(" \n")
+            answer = Answer.objects.create(**{
+                "answer_content":resposta
+            })
+            answer.save()
+            question.answer = answer
+            question.isReady = True
+            question.save()
+
+
+
+            # resposta = openai.Completion.create(
+            #     prompt=header,
+            #     temperature=0,
+            #     max_tokens=settings.MAX_CONTEXT_SIZE,
+            #     top_p=1,
+            #     frequency_penalty=0,
+            #     presence_penalty=0,
+            #     model= question.chat_session.prompt.prompt_model
+            # )["choices"][0]["text"].strip(" \n")
+
+
+            print(resposta)
+
+
+        print(context_entries.__len__())
+    # 
+    # question.save()
+    # 
+    # Send task to retrieve answer
+
+
+@shared_task(name="prepare_question", max_retries=2, soft_time_limit=600)
+def on_prepare_question_task(question_pk):
+    token_encoding = tiktoken.get_encoding("cl100k_base")
+    question = Question.get_or_none(pk=question_pk,isReadyToAsk=False,hasErrors=False)
+    if question:
+        print(question.chat_session.prompt.knowledge_base.organization.chatgpt_api_token)
+        
+        try:
+            openai.api_key = question.chat_session.prompt.knowledge_base.organization.chatgpt_api_token
+            question.num_tokens = len(token_encoding.encode(question.question_content))        
+            question.generated_embedding = openai.Embedding.create(input=question.question_content, engine='text-embedding-ada-002')   
+        except Exception as e:                
+            question.lastLog=e.__repr__()
+            question.hasErrors=True
+            question.save()            
+            logger.error(e.__repr__())
+        else:
+            question.hasErrors=False
+            question.isReadyToAsk = True
+            question.save()
+            app.send_task("retrieve_answer",[question_pk])
+
+            
+        logger.info(f"Buscando resposta para pergunta {question} usando o prompt: {question.chat_session.prompt}")
+
+
+
 
 
 @shared_task(name="chats_collection_id_only_question", max_retries=2, soft_time_limit=45)

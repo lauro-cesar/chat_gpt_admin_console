@@ -843,7 +843,8 @@ class {{model_name}}Admin(BaseModelAdmin):
             checklist.append(user.is_operator)    
         
         if obj is not None:
-            checklist.append(obj.criado_por in [user]) 
+            if hasattr(obj,"criado_por"):
+                checklist.append(obj.criado_por in [user]) 
         return (True in checklist)
 
 

@@ -13,8 +13,8 @@ from django.conf import settings
 router = DefaultRouter()
 
 router.register(r'document', DocumentViewSet,basename="document")
-router.register(r'serial-document', SerialDocumentViewSet,basename="serial-document")
-router.register(r'document-collection-id-only', DocumentIdOnlyViewSet,basename="id-only-document")
+# router.register(r'serial-document', SerialDocumentViewSet,basename="serial-document")
+# router.register(r'document-collection-id-only', DocumentIdOnlyViewSet,basename="id-only-document")
 
 urlpatterns = [
 	path('', include(router.urls))

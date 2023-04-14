@@ -7,3 +7,4 @@ from .prompt_template  import  PostSavePromptTemplateSignals
 from .prompt  import  PostSavePromptSignals
 from .question  import  PostSaveQuestionSignals
 from .answer  import  PostSaveAnswerSignals
+from .chat_session  import  PostSaveChatSessionSignals

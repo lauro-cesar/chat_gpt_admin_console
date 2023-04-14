@@ -18,24 +18,25 @@ from django.contrib import messages,admin
 from project.models import BaseModel, StackedModel
 
 
+
 class Question(BaseModel):
     MODEL_LIST_ORDER_VALUE = 0
-    SERIALIZABLES =['id','label','serial']
+    SERIALIZABLES =['id','resposta','question_content','chat_session','isReady','hasErrors']
     FLUTTER_TYPES = {
         "default": "String",
         "id": "int",
     }
     FLUTTER_MANY_TO_MANY = {}
     FLUTTER_ONE_TO_ONE = {}    
-    READ_ONLY_FIELDS=['id','serial']
+    READ_ONLY_FIELDS=['id','serial','resposta','isReady','hasErrors']
     ADMIN_LIST_EDITABLE=[]
-    ADMIN_LIST_DISPLAY=['label','resposta','question_content','isReadyToAsk','isReady','hasErrors','rest_endpoint']
+    ADMIN_LIST_DISPLAY=['question_content','resposta','isReady','hasErrors','rest_endpoint']
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
-    ADMIN_LIST_FILTER=["prompt__organization",'isReadyToAsk','isReady','hasErrors']
+    ADMIN_LIST_FILTER=['isReadyToAsk','isReady','hasErrors']
     ADMIN_SEARCH_FILTER=[]
     ADMIN_DISPLAY_LINKS=[]
-    EXCLUDE_FROM_ADMIN=["generated_embedding","isReady","num_tokens","lastLog"]
+    EXCLUDE_FROM_ADMIN=["generated_embedding","isReady","num_tokens","lastLog","answer",'isReadyToAsk','hasErrors']
     CREATE_FIELDS=[]
     FORM_FIELDS=[]
     REST_BASENAME="question"
@@ -53,7 +54,7 @@ class Question(BaseModel):
 
     @property
     def embedded_query(self):
-        query = None 
+        query = []
         try:
             query = self.generated_embedding.get("data",{})[0].get("embedding")
         except Exception as e:
@@ -62,9 +63,16 @@ class Question(BaseModel):
         return query
     
 
+    @property
+    @admin.display(description="Query Tokens")
+    def query_tokens(self): 
+        return mark_safe(f"<textarea>{self.embedded_query}</textarea>")
+    
+
+
     num_tokens = models.PositiveSmallIntegerField(default=0,verbose_name=_("Total de tokens"))
     isReady = models.BooleanField(default=False)
-    isReadyToAsk = models.BooleanField(default=False)
+    isReadyToAsk = models.BooleanField(default=False)    
     hasErrors = models.BooleanField(default=False)
     lastLog = models.JSONField(default=dict,blank=True,null=True)
 
@@ -77,15 +85,15 @@ class Question(BaseModel):
         related_name="questions_using_this_answer"
     )
 
-
-    prompt = models.ForeignKey(
-        "chats.Prompt",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("ChatGPT prompt"),
-        related_name="prompt_questions"
+    chat_session = models.ForeignKey(
+        "chats.ChatSession",
+        null=False,
+        blank=False,
+        on_delete=models.CASCADE,
+        verbose_name=_("Sessão do chat"),
+        related_name="session_questions"
     )
+    
 
     @property
     @admin.display(description="Resposta")
@@ -95,7 +103,7 @@ class Question(BaseModel):
         except Exception as e:
             answer_content = "Aguardando resposta"
 
-        return mark_safe(f"<textarea>{answer_content}</textarea>")
+        return mark_safe(f"<div>{answer_content}</div>")
     
     @property
     def label(self):

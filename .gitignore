@@ -10,8 +10,10 @@ backend/chat_gpt_api/media/*
 backend/redis-datastore/*
 backend/chat_gpt_api/.python3/*
 redis-datastore/*
+backend/redis-data/*
 organizations.json
 backend/chat_gpt_api/initial_data/*
+
 #*.env-*.yaml
 
 # flutter artifacts

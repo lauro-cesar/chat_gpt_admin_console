@@ -13,8 +13,8 @@ from django.conf import settings
 router = DefaultRouter()
 
 router.register(r'prompttemplate', PromptTemplateViewSet,basename="prompttemplate")
-router.register(r'serial-prompttemplate', SerialPromptTemplateViewSet,basename="serial-prompttemplate")
-router.register(r'prompttemplate-collection-id-only', PromptTemplateIdOnlyViewSet,basename="id-only-prompttemplate")
+# router.register(r'serial-prompttemplate', SerialPromptTemplateViewSet,basename="serial-prompttemplate")
+# router.register(r'prompttemplate-collection-id-only', PromptTemplateIdOnlyViewSet,basename="id-only-prompttemplate")
 
 urlpatterns = [
 	path('', include(router.urls))

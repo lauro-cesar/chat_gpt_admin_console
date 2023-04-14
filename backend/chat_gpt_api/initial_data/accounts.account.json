@@ -7,7 +7,7 @@
         "isPublic": false,
         "isRemoved": false,
         "password": "pbkdf2_sha256$600000$Z8GUA9aqqRXVTevLJWaJkv$ZwqIWK8AMlZzwjCN8t3A3ObskxhNPUybO/CkoZpg2jA=",
-        "last_login": "2023-04-13T08:17:01.917",
+        "last_login": "2023-04-14T07:31:21.142",
         "is_superuser": true,
         "username": "root",
         "first_name": "Console Manager",

@@ -32,7 +32,7 @@ class Embedding(BaseModel,BaseModelForeignMixin):
     ADMIN_LIST_DISPLAY=['label','document_page','isIndexed','inProgress','isReadyForIndex','num_tokens','hasErrors','rest_endpoint']
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
-    ADMIN_LIST_FILTER=["document__organization","hasErrors",'isIndexed','inProgress','isReadyForIndex']
+    ADMIN_LIST_FILTER=["document__knowledge_base__organization","hasErrors",'isIndexed','inProgress','isReadyForIndex']
     ADMIN_SEARCH_FILTER=["document__document_file"]
     ADMIN_DISPLAY_LINKS=[]
     EXCLUDE_FROM_ADMIN=["isIndexed","inProgress"]
@@ -51,7 +51,7 @@ class Embedding(BaseModel,BaseModelForeignMixin):
     isIndexed = models.BooleanField(default=False)
     inProgress = models.BooleanField(default=False)
     isReadyForIndex = models.BooleanField(default=False)
-    embedding_raw_content = models.TextField()
+    embedding_raw_content = models.TextField()    
     generated_embedding = models.JSONField(default=dict)
     num_tokens = models.PositiveSmallIntegerField(default=0,verbose_name=_("Total de tokens"))
     document_page = models.PositiveSmallIntegerField(verbose_name=_("Página correspondente"),default=1)

@@ -20,7 +20,7 @@ from project.models import BaseModel, StackedModel, BaseModelForeignMixin
 
 class Organization(BaseModelForeignMixin,BaseModel):
     MODEL_LIST_ORDER_VALUE = 0
-    SERIALIZABLES =['id','label','serial']
+    SERIALIZABLES =['id','organization_name','chatgpt_api_token']
     FLUTTER_TYPES = {
         "default": "String",
         "id": "int",

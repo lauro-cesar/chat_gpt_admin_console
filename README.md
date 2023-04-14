@@ -7,6 +7,7 @@
 - [x] Create organizations;
 - [x] Create Users;
 - [x] Create prompts;
+- [x] Prompt engineering
 - [ ] Create authenticated pages for prompts;
 - [ ] Apply templates to Prompts;
 - [x] Embeddings from PDFS;

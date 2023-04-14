@@ -7,3 +7,4 @@ from .prompt_template import PromptTemplate
 from .prompt import Prompt
 from .question import Question
 from .answer import Answer
+from .chat_session import ChatSession

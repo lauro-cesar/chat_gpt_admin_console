@@ -43,8 +43,8 @@
     "model": "contenttypes.contenttype",
     "pk": 6,
     "fields": {
-        "app_label": "chats",
-        "model": "answer"
+        "app_label": "organizations",
+        "model": "knowledgebase"
     }
 },
 {
@@ -52,7 +52,7 @@
     "pk": 7,
     "fields": {
         "app_label": "chats",
-        "model": "prompt"
+        "model": "answer"
     }
 },
 {
@@ -60,7 +60,7 @@
     "pk": 8,
     "fields": {
         "app_label": "chats",
-        "model": "prompttemplate"
+        "model": "chatsession"
     }
 },
 {
@@ -68,12 +68,28 @@
     "pk": 9,
     "fields": {
         "app_label": "chats",
-        "model": "question"
+        "model": "prompttemplate"
     }
 },
 {
     "model": "contenttypes.contenttype",
     "pk": 10,
+    "fields": {
+        "app_label": "chats",
+        "model": "question"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+        "app_label": "chats",
+        "model": "prompt"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 12,
     "fields": {
         "app_label": "authtoken",
         "model": "token"
@@ -81,7 +97,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 11,
+    "pk": 13,
     "fields": {
         "app_label": "authtoken",
         "model": "tokenproxy"
@@ -89,7 +105,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 12,
+    "pk": 14,
     "fields": {
         "app_label": "contenttypes",
         "model": "contenttype"
@@ -97,7 +113,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 13,
+    "pk": 15,
     "fields": {
         "app_label": "auth",
         "model": "permission"
@@ -105,7 +121,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 14,
+    "pk": 16,
     "fields": {
         "app_label": "auth",
         "model": "group"
@@ -113,7 +129,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 15,
+    "pk": 17,
     "fields": {
         "app_label": "sessions",
         "model": "session"
@@ -121,7 +137,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 16,
+    "pk": 18,
     "fields": {
         "app_label": "sites",
         "model": "site"
@@ -129,7 +145,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 17,
+    "pk": 19,
     "fields": {
         "app_label": "flatpages",
         "model": "flatpage"

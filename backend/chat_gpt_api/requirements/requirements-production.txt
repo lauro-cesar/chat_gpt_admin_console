@@ -33,3 +33,5 @@ aiofiles
 PyPDF2>=2.10.4
 tiktoken
 openai
+matplotlib
+plotly

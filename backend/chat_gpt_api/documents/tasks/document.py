@@ -22,12 +22,36 @@ from asgiref.sync import async_to_sync
 from documents.models import Document
 from documents.serializers import DocumentSerializer, DocumentIdOnlySerializer
 from PyPDF2 import PdfReader
+import tiktoken
+import openai
+import redis
+import numpy as np
+
+
+def chunks(text, n, tokenizer):
+    tokens = tokenizer.encode(text)
+    """Yield successive n-sized chunks from text."""
+    i = 0
+    while i < len(tokens):
+        # Find the nearest end of sentence within a range of 0.5 * n and 1.5 * n tokens
+        j = min(i + int(1.5 * n), len(tokens))
+        while j > i + int(0.5 * n):
+            # Decode the tokens and check for full stop or newline
+            chunk = tokenizer.decode(tokens[i:j])
+            if chunk.endswith(".") or chunk.endswith("\n"):
+                break
+            j -= 1
+        # If no end of sentence found, use n tokens as the chunk size
+        if j == i + int(0.5 * n):
+            j = min(i + n, len(tokens))
+        yield tokens[i:j]
+        i = j
 
 
 
 @shared_task(name="consolida_documento_indexado", max_retries=2, soft_time_limit=600)
 def on_consolida_documento_indexado_task(object_pk):
-    print(f"Consolidando documento: {object_pk}")
+    logger.info(f"Consolidando documento: {object_pk}")
     instance = Document.get_or_none(pk=object_pk)
     total_docs = instance.document_embeddings.count()
     total_indexado = instance.document_embeddings.filter(isIndexed=True).count()
@@ -44,7 +68,7 @@ def on_consolida_documento_indexado_task(object_pk):
 def on_monitora_indexador_task():
     # Verifica o status dos documentos nao indexados
     documentos = Document.objects.filter(isIndexed=False,inProgress=True)[0:100]
-    print(f"Consolidando documentos: {documentos.count()}")
+    logger.info(f"Consolidando documentos: {documentos.count()}")
     for documento in documentos:
         app.send_task("consolida_documento_indexado",[documento.id])
 
@@ -52,6 +76,7 @@ def on_monitora_indexador_task():
 @shared_task(name="extract_raw_embedding", max_retries=2, soft_time_limit=600)
 def on_extract_raw_embedding_task(object_pk):
     instance = Document.get_or_none(pk=object_pk)
+    token_encoding = tiktoken.get_encoding("cl100k_base")
     
     try:
         instance.document_embeddings.all().delete()
@@ -63,16 +88,22 @@ def on_extract_raw_embedding_task(object_pk):
     instance.inProgress=True 
     instance.isIndexed=False
     instance.save()
+
     for p in pdf_obj.pages:
         texto = p.extract_text()
-        texto = texto.strip()
-        if len(texto):
+        texto = texto.strip().replace("\n", "; ").replace("  ", " ")
+        token_chunks = list(chunks(texto, settings.TEXT_EMBEDDING_CHUNK_SIZE, token_encoding))
+        text_chunks = [token_encoding.decode(chunk) for chunk in token_chunks]
+        text_chunks_list = [text_chunks[i:i+settings.MAX_TEXTS_TO_EMBED_BATCH_SIZE] for i in range(0, len(text_chunks), settings.MAX_TEXTS_TO_EMBED_BATCH_SIZE)]
+
+        #TODO: Send to another task
+        for text_chunk in text_chunks_list:
             instance.document_embeddings.create(**{
                 "document_page":page,
-                "embedding_raw_content":texto.strip()})
+                "embedding_raw_content":" ".join(text_chunk)})
         page +=1
 
-    print(f"Extracting Raw embedding for {instance}")
+    logger.info(f"Extracting Raw embedding for {instance}")
 
 
 @shared_task(name="documents_collection_id_only_document", max_retries=2, soft_time_limit=45)

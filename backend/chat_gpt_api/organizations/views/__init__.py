@@ -13,3 +13,13 @@ from .organization import (
     SerialOrganizationViewSet,
     OrganizationIdOnlyViewSet,    
     OrganizationViewSet)
+from .knowledge_base import (
+    KnowledgeBaseTemplateView,
+    KnowledgeBaseDetailView, 
+    KnowledgeBaseListView, 
+    KnowledgeBaseUpdateView, 
+    KnowledgeBaseCreateView, 
+    KnowledgeBaseDeleteView,
+    SerialKnowledgeBaseViewSet,
+    KnowledgeBaseIdOnlyViewSet,    
+    KnowledgeBaseViewSet)

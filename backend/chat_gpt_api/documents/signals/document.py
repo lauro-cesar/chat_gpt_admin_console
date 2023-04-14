@@ -25,6 +25,8 @@ from documents.models import Document
 def PostSaveDocumentSignals(
     sender, instance, created, using, update_fields, *args, **kwargs
 ):
+    
+ 
     if True in [created]:
         for task in Document.TASKS.get('on_create',[]):
             app.send_task(task, [instance.id])

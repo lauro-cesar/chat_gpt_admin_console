@@ -24,3 +24,16 @@ from .prompt import (
     SerialPromptViewSet,
     PromptIdOnlyViewSet,    
     PromptViewSet)
+
+from .question import QuestionViewSet
+
+from .chat_session import (
+    ChatSessionTemplateView,
+    ChatSessionDetailView, 
+    ChatSessionListView, 
+    ChatSessionUpdateView, 
+    ChatSessionCreateView, 
+    ChatSessionDeleteView,
+    SerialChatSessionViewSet,
+    ChatSessionIdOnlyViewSet,    
+    ChatSessionViewSet)

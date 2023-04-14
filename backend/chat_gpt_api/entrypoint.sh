@@ -40,11 +40,7 @@ if [ -z "${DATABASE_PORT}" ] ; then
 done
 fi
 
-echo "Starting Redis Index"
-python start_index.py 
-
 echo "Starting Django"
-
 # shellcheck disable=SC2043
 for app in $app_list;
   do

@@ -32,7 +32,7 @@ class Answer(BaseModel):
     ADMIN_LIST_DISPLAY=['label','rest_endpoint']
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
-    ADMIN_LIST_FILTER=["questions_using_this_answer__prompt__organization"]
+    ADMIN_LIST_FILTER=[]
     ADMIN_SEARCH_FILTER=[]
     ADMIN_DISPLAY_LINKS=[]
     EXCLUDE_FROM_ADMIN=[]

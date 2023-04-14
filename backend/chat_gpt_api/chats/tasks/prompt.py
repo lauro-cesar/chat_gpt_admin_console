@@ -19,69 +19,8 @@ import base64
 from project.celery_tasks import app
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
-from chats.models import Prompt, Question, Answer
+from chats.models import Prompt
 from chats.serializers import PromptSerializer, PromptIdOnlySerializer
-
-import tiktoken
-import openai
-import redis
-import numpy as np
-
-from redis.commands.search.query import Query
-
-redis_client = redis.Redis(password=settings.REDIS_VECTOR_DB_PASSWORD,port=settings.REDIS_VECTOR_DB_PORT,host=settings.REDIS_VECTOR_DB_HOST)
-
-
-
-@shared_task(name="retrieve_answer", max_retries=2, soft_time_limit=600)
-def on_retrieve_answer_task(question_pk):
-    print(f"Retrieve answer for: {question_pk}")
-
-
-@shared_task(name="prepare_question", max_retries=2, soft_time_limit=600)
-def on_prepare_question_task(question_pk):
-    question = Question.get_or_none(pk=question_pk,isReadyToAsk=False,hasErrors=False)
-    
-    if question:
-
-        token_encoding = tiktoken.get_encoding("cl100k_base")
-        try:
-            openai.api_key = question.prompt.organization.chatgpt_api_token
-            question.num_tokens = len(token_encoding.encode(question.question_content))        
-            question.generated_embedding = openai.Embedding.create(input=question.question_content, engine='text-embedding-ada-002')   
-        except Exception as e:                
-            question.lastLog=e.__repr__()
-            question.hasErrors=True
-            question.save()            
-            logger.error(e.__repr__())
-        else:
-
-            try:
-                hybrid_fields = "*"
-                k= 10
-                return_fields= ["vector_score"]
-                vector_field = "content_vector"
-                base_query = f'{hybrid_fields}=>[KNN {k} @{vector_field} $vector AS vector_score]'
-                query = (Query(base_query).return_fields(*return_fields).sort_by("vector_score").paging(0, k).dialect(2))            
-                params_dict = {"vector": np.array(question.embedded_query).astype(dtype=np.float32).tobytes()}
-                results = redis_client.ft(settings.VECTOR_DB_HNSW_INDEX_NAME).search(query, params_dict)                        
-                for i, article in enumerate(results.docs):
-                    score = 1 - float(article.vector_score)
-                    print(f"{i}. {article} (Score: {round(score ,3) })")
-            
-            except Exception as e:
-                print(e.__repr__())
-
-            question.hasErrors=False
-            question.isReadyToAsk = True
-            question.save()
-            app.send_task("retrieve_answer",[question_pk])
-            # Send task to retrieve answer
-
-        logger.info(f"Buscando resposta para pergunta {question} usando o prompt: {question.prompt}")
-
-
-
 
 
 @shared_task(name="chats_collection_id_only_prompt", max_retries=2, soft_time_limit=45)

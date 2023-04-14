@@ -4,3 +4,4 @@ All rights reserved under BSD 3-Clause License.
 """
 
 from . import organization
+from . import knowledge_base

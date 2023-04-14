@@ -20,22 +20,24 @@ from project.models import BaseModel, StackedModel
 
 class Prompt(BaseModel):
     MODEL_LIST_ORDER_VALUE = 0
-    SERIALIZABLES =['id','label','serial']
+    SERIALIZABLES =['id','prompt_name',
+                    'knowledge_base',
+                    'prompt_command','prompt_temperature','prompt_max_tokens','prompt_frequency_penalty','prompt_presence_penalty','lastLog','hasErrors']
     FLUTTER_TYPES = {
         "default": "String",
         "id": "int",
     }
     FLUTTER_MANY_TO_MANY = {}
     FLUTTER_ONE_TO_ONE = {}    
-    READ_ONLY_FIELDS=['id','serial']
+    READ_ONLY_FIELDS=['id','serial','lastLog','hasErrors']
     ADMIN_LIST_EDITABLE=[]
-    ADMIN_LIST_DISPLAY=['label', 'organization','prompt_model','total_questions','rest_endpoint']
+    ADMIN_LIST_DISPLAY=['label','total_questions','rest_endpoint']
     ADMIN_ORDERING=[]
     ADMIN_FILTER_HORIZONTAL= []
-    ADMIN_LIST_FILTER=["organization"]
+    ADMIN_LIST_FILTER=[]
     ADMIN_SEARCH_FILTER=[]
     ADMIN_DISPLAY_LINKS=[]
-    EXCLUDE_FROM_ADMIN=[]
+    EXCLUDE_FROM_ADMIN=["prompt_model","lastLog","hasErrors"]
     CREATE_FIELDS=[]
     FORM_FIELDS=[]
     REST_BASENAME="prompt"
@@ -56,13 +58,13 @@ class Prompt(BaseModel):
     lastLog = models.JSONField(default=dict,blank=True,null=True)
     hasErrors = models.BooleanField(default=False)
 
-    organization = models.ForeignKey(
-        "organizations.Organization",
-        related_name="organization_chats",
-        verbose_name=_("Organização"),
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL
+    knowledge_base = models.ForeignKey(
+        "organizations.KnowledgeBase",
+        related_name="prompt_using_this",
+        verbose_name=_("Base de conhecimento"),
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE
     )
 
     @property

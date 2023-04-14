@@ -7,3 +7,4 @@ from .prompt_template import PromptTemplateAdmin
 from .prompt import PromptAdmin
 from .question import QuestionAdmin
 from .answer import AnswerAdmin
+from .chat_session import ChatSessionAdmin

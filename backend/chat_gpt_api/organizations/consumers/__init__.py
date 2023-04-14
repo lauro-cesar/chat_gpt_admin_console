@@ -9,3 +9,4 @@ All rights reserved under BSD 3-Clause License.
 """
 
 from .organization import OrganizationConsumer,OrganizationCollectionConsumer, OrganizationCollectionIdOnlyConsumer
+from .knowledge_base import KnowledgeBaseConsumer,KnowledgeBaseCollectionConsumer, KnowledgeBaseCollectionIdOnlyConsumer

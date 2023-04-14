@@ -4,7 +4,7 @@ Copyright (c) 2023, Lauro Cesar <lauro@hostcert.com.br>
 All rights reserved under BSD 3-Clause License.
 """
 from rest_framework import viewsets
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, FileUploadParser,MultiPartParser
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
@@ -69,7 +69,10 @@ class DocumentTemplateView(BaseTemplateView):
 
 
 class DocumentViewSet(BaseViewSetModel):
+   parser_classes = [MultiPartParser]
    serializer_class = DocumentSerializer
+
+   
 
 class SerialDocumentViewSet(BaseViewSetModel):
    serializer_class = SerialDocumentSerializer

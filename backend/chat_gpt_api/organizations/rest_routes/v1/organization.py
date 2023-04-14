@@ -13,8 +13,8 @@ from django.conf import settings
 router = DefaultRouter()
 
 router.register(r'organization', OrganizationViewSet,basename="organization")
-router.register(r'serial-organization', SerialOrganizationViewSet,basename="serial-organization")
-router.register(r'organization-collection-id-only', OrganizationIdOnlyViewSet,basename="id-only-organization")
+# router.register(r'serial-organization', SerialOrganizationViewSet,basename="serial-organization")
+# router.register(r'organization-collection-id-only', OrganizationIdOnlyViewSet,basename="id-only-organization")
 
 urlpatterns = [
 	path('', include(router.urls))

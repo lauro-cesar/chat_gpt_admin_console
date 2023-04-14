@@ -17,7 +17,7 @@ from rest_framework import generics
 class BaseViewSetModel(viewsets.ModelViewSet):
     ENABLE_READ_ONLY = False
     permission_classes = [IsAuthenticated]
-    authentication_classes = [APITokenAuthentication, SessionAuthentication]
+    authentication_classes = [APITokenAuthentication,SessionAuthentication]
     parser_classes = [JSONParser]
 
     def destroy(self, request, *args, **kwargs):
@@ -44,10 +44,10 @@ class BaseViewSetModel(viewsets.ModelViewSet):
         # return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def get_serializer_context(self):
+            # "request_by": self.request.user,
+            # "criado_por": self.request.user,
+            # "modificado_por": self.request.user,        
         return {
-            "request_by": self.request.user,
-            "criado_por": self.request.user,
-            "modificado_por": self.request.user,
             "request": self.request,  # request object is passed here
             "format": self.format_kwarg,
             "view": self,
