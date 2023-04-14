@@ -8,8 +8,8 @@
 - [x] Create knowledge bases
 - [x] Upload PDFs to knowledge bases
 - [x] Create Users
-- [x] Create prompts (text-davinci-003 only)
-- [x] Prompt engineering (text-davinci-003 only)
+- [x] Create prompts (text-davinci-003 only, upgrade soon)
+- [x] Prompt engineering (text-davinci-003, upgrade soon)
 - [x] Ask questions based on documents from knowledge base (Via Console and REST)
 - [ ] Create authenticated pages for prompts;
 - [ ] Apply templates to Prompts;
