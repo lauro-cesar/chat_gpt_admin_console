@@ -107,7 +107,7 @@ def on_retrieve_answer_task(question_pk):
            
                 
 
-                
+    
                 
         
 
@@ -115,44 +115,48 @@ def on_retrieve_answer_task(question_pk):
             print(e.__repr__())
         
         else:
-            header = f"""{question.chat_session.prompt.prompt_command}\nContext:{prompt_context}\nQ:{question.question_content}\nA:"""
+
+            header = f"""{question.chat_session.prompt.prompt_command}\n\nContext:{prompt_context}\n\nQuestion:{question.question_content}"""
             openai.api_key = question.chat_session.prompt.knowledge_base.organization.chatgpt_api_token
-
+            query = f""" """
             MODEL = "text-davinci-003"
-            # response = openai.ChatCompletion.create(
-            #     model=MODEL,
-            #     messages=[
-            #         {"role": "system", "content": f"{question.chat_session.prompt.prompt_command}"},
-            #         {"role": "user", "content": f"{question.question_content}"},
-            #     ],
-            #     temperature=0,
-            # )
 
-    # messages=[
-    #     {"role": "system", "content": "You are a helpful assistant."},
-    #     {"role": "user", "content": "Knock knock."},
-    #     {"role": "assistant", "content": "Who's there?"},
-    #     {"role": "user", "content": "Orange."},
-    # ],
-
-
-            resposta = openai.Completion.create(
-                prompt=header,
-                temperature=0,
-                max_tokens=settings.MAX_CONTEXT_SIZE,
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                temperature=question.chat_session.prompt.prompt_temperature,
+                max_tokens=question.chat_session.prompt.prompt_max_tokens,
                 top_p=1,
-                frequency_penalty=0,
-                presence_penalty=0,
-                model= MODEL
+                frequency_penalty=question.chat_session.prompt.prompt_frequency_penalty,
+                presence_penalty=question.chat_session.prompt.prompt_presence_penalty,                
+                messages=[
+                    {"role": "system", "content": f"{question.chat_session.prompt.prompt_command}"},
+                    {"role": "user", "content": f"{question.question_content}"},
+                ]               
+            )["choices"][0].get("message",{}).get("content","Nada Encontrado")
 
-            )["choices"][0]["text"].strip(" \n")
+
+
+            # resposta = openai.Completion.create(
+            #     prompt=header,
+            #     temperature=question.chat_session.prompt.prompt_temperature,
+            #     max_tokens=question.chat_session.prompt.prompt_max_tokens,
+            #     top_p=1,
+            #     frequency_penalty=question.chat_session.prompt.prompt_frequency_penalty,
+            #     presence_penalty=question.chat_session.prompt.prompt_presence_penalty,
+            #     model= MODEL
+
+            # )["choices"][0]["text"].strip(" \n")
+
+
+
             answer = Answer.objects.create(**{
-                "answer_content":resposta
+                "answer_content":response
             })
             answer.save()
             question.answer = answer
             question.isReady = True
             question.save()
+            print(response)
 
 
 
@@ -167,10 +171,7 @@ def on_retrieve_answer_task(question_pk):
             # )["choices"][0]["text"].strip(" \n")
 
 
-            print(resposta)
 
-
-        print(context_entries.__len__())
     # 
     # question.save()
     # 

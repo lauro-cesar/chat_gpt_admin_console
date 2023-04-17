@@ -62,7 +62,7 @@ class ChatSession(BaseModel):
 
     @property
     def label(self):
-        return "Sessao"
+        return self.session_name
 
     class Meta(BaseModel.Meta):
         verbose_name = _("Sessao")
