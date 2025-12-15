@@ -1,5 +1,5 @@
 # Web Admin console for ChatGPT
- 
+#  
 
 ## Features
 
@@ -14,7 +14,7 @@
 - [ ] Create authenticated pages for prompts;
 - [ ] Apply templates to Prompts;
 - [x] Embeddings from PDFS;
-- [ ] Embeddings from Text Files;
+- [x] Embeddings from Text Files;
 - [ ] Embeddings from web pages through built in scrapper;
 - [ ] Reports;
 - [ ] Realtime usage data;
@@ -22,6 +22,7 @@
 
 
 ## How to use (via Web interface)
+
 
 ## How to use: (via Rest interface)
 
